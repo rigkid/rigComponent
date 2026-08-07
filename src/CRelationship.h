@@ -1,0 +1,19 @@
+#pragma once
+
+#include <entt/entt.hpp>
+
+namespace rigkit {
+namespace ecs {
+
+/**
+ * @brief Parent link for transform hierarchy (opt-in; absent = root).
+ * @details NO CODE JUST DATA — no child lists (derive by scan). Walk parents
+ * in rigSystems `SHierarchy` to fill `CTransform::world`. Not a document/node-editor
+ * node type; keep `CNode` free for those packs.
+ */
+struct CRelationship {
+	entt::entity parent{entt::null};
+};
+
+} // namespace ecs
+} // namespace rigkit

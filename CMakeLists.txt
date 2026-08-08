@@ -4,6 +4,8 @@ string(JSON PACK_NAME GET "${PACK_JSON}" name)
 add_library(${PACK_NAME} STATIC
 	src/rigComponent.cpp
 	src/rigComponent.h
+	src/PrimitiveBounds.cpp
+	src/PrimitiveVertices.cpp
 	src/rig/create.cpp
 )
 target_link_libraries(${PACK_NAME} PUBLIC rigkit)

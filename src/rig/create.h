@@ -7,14 +7,21 @@
 #include <string>
 #include <vector>
 
+#include "CArc.h"
 #include "CCamera.h"
 #include "CDrawStyle.h"
+#include "CEllipse.h"
 #include "CGroup.h"
 #include "CIndexedAtlas.h"
 #include "CLight.h"
+#include "CLine.h"
 #include "CPalette.h"
 #include "CMesh.h"
-#include "CShape.h"
+#include "CPolygon.h"
+#include "CRectangle.h"
+#include "CRegularPolygon.h"
+#include "CRing.h"
+#include "CStar.h"
 #include "CTransform.h"
 #include "ecs/MEcs.h"
 
@@ -111,6 +118,61 @@ entt::entity makeLine(float x1, float y1, float x2, float y2,
 
 entt::entity makeLine(rigkit::MEcs& ecs, float x1, float y1, float x2, float y2,
 					  const rigkit::ecs::CDrawStyle& style = stroke(1, 1, 1),
+					  const std::string& name = {});
+
+/**
+ * @brief Equilateral n-gon entity. @param x Centre x. @param y Centre y.
+ * @param radius Centre to vertex. @param rotation Degrees from +X.
+ */
+entt::entity makeRegularPolygon(float x, float y, float radius, int sides, float rotation = 0.0f,
+								const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
+								const std::string& name = {});
+
+entt::entity makeRegularPolygon(rigkit::MEcs& ecs, float x, float y, float radius, int sides,
+								float rotation = 0.0f,
+								const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
+								const std::string& name = {});
+
+/**
+ * @brief Star entity. @param x Centre x. @param y Centre y.
+ * @param radius Centre to outer point. @param innerRadius Absolute, not a ratio.
+ */
+entt::entity makeStar(float x, float y, float radius, float innerRadius, int points = 5,
+					  float rotation = 0.0f,
+					  const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
+					  const std::string& name = {});
+
+entt::entity makeStar(rigkit::MEcs& ecs, float x, float y, float radius, float innerRadius,
+					  int points = 5, float rotation = 0.0f,
+					  const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
+					  const std::string& name = {});
+
+/** @brief Freeform outline from a vertex list (needs three or more points). */
+entt::entity makePolygon(std::vector<glm::vec2> points, bool closed = true,
+						 const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
+						 const std::string& name = {});
+
+entt::entity makePolygon(rigkit::MEcs& ecs, std::vector<glm::vec2> points, bool closed = true,
+						 const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
+						 const std::string& name = {});
+
+/** @brief Circular arc. @param pie Close through the centre. Angles in degrees. */
+entt::entity makeArc(float x, float y, float radius, float startAngle, float endAngle,
+					 bool pie = false, const rigkit::ecs::CDrawStyle& style = stroke(1, 1, 1),
+					 const std::string& name = {});
+
+entt::entity makeArc(rigkit::MEcs& ecs, float x, float y, float radius, float startAngle,
+					 float endAngle, bool pie = false,
+					 const rigkit::ecs::CDrawStyle& style = stroke(1, 1, 1),
+					 const std::string& name = {});
+
+/** @brief Annulus with a real hole, not a stroked ellipse. */
+entt::entity makeRing(float x, float y, float outerRadius, float innerRadius,
+					  const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
+					  const std::string& name = {});
+
+entt::entity makeRing(rigkit::MEcs& ecs, float x, float y, float outerRadius, float innerRadius,
+					  const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
 					  const std::string& name = {});
 
 /**

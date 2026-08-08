@@ -2,11 +2,13 @@
 
 #include "rigComponent.h"
 
+#include "CArc.h"
 #include "CAssetRef.h"
 #include "CCamera.h"
 #include "CCanvas.h"
 #include "CCode.h"
 #include "CDriveHint.h"
+#include "CEllipse.h"
 #include "COrbitDrive.h"
 #include "CSelectable.h"
 #include "CDrawStyle.h"
@@ -17,10 +19,15 @@
 #include "CPalette.h"
 #include "CMesh.h"
 #include "CLayer.h"
+#include "CLine.h"
 #include "CPath.h"
+#include "CPolygon.h"
+#include "CRectangle.h"
+#include "CRegularPolygon.h"
 #include "CRelationship.h"
+#include "CRing.h"
 #include "CSelection.h"
-#include "CShape.h"
+#include "CStar.h"
 #include "CText.h"
 #include "CTransform.h"
 #include "rig/create.h"
@@ -62,7 +69,14 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::COrbitDrive>("OrbitDrive", true);
 	ecs->registerComponent<ecs::CPalette>("Palette", true);
 	ecs->registerComponent<ecs::CIndexedAtlas>("IndexedAtlas", true);
-	ecs->registerComponent<ecs::CShape>("Shape", true);
+	ecs->registerComponent<ecs::CRectangle>("Rectangle", true);
+	ecs->registerComponent<ecs::CEllipse>("Ellipse", true);
+	ecs->registerComponent<ecs::CLine>("Line", true);
+	ecs->registerComponent<ecs::CPolygon>("Polygon", true);
+	ecs->registerComponent<ecs::CRegularPolygon>("RegularPolygon", true);
+	ecs->registerComponent<ecs::CStar>("Star", true);
+	ecs->registerComponent<ecs::CArc>("Arc", true);
+	ecs->registerComponent<ecs::CRing>("Ring", true);
 	ecs->registerComponent<ecs::CPath>("Path", true);
 	ecs->registerComponent<ecs::CMesh>("Mesh", true);
 	ecs->registerComponent<ecs::CDrawStyle>("DrawStyle", true);

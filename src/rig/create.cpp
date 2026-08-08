@@ -27,12 +27,13 @@ rigkit::ecs::CTransform at(float x, float y, float z = 0.0f) {
 	return t;
 }
 
-entt::entity spawnShape(rigkit::MEcs& ecs, rigkit::ecs::CShape shape,
-						const rigkit::ecs::CDrawStyle& style, const rigkit::ecs::CTransform& xf,
-						const std::string& name) {
+/// Placement rides the transform, so every primitive stays local to its own origin.
+template <typename TShape>
+entt::entity spawnShape(rigkit::MEcs& ecs, TShape shape, const rigkit::ecs::CDrawStyle& style,
+						const rigkit::ecs::CTransform& xf, const std::string& name) {
 	auto e = ecs.createEntity(name);
 	ecs.addComponent<rigkit::ecs::CTransform>(e, xf);
-	ecs.addComponent<rigkit::ecs::CShape>(e, shape);
+	ecs.addComponent<TShape>(e, std::move(shape));
 	ecs.addComponent<rigkit::ecs::CDrawStyle>(e, style);
 	ecs.addComponent<rigkit::ecs::CSelectable>(e, rigkit::ecs::CSelectable{});
 	return e;
@@ -50,25 +51,18 @@ rigkit::MEcs* currentEcs() {
 
 entt::entity makeRect(rigkit::MEcs& ecs, float x, float y, float w, float h,
 					  const rigkit::ecs::CDrawStyle& style, const std::string& name) {
-	rigkit::ecs::CShape shape;
-	shape.type = rigkit::ecs::CShape::Type::Rectangle;
-	shape.x1 = 0.0f;
-	shape.y1 = 0.0f;
-	shape.x2 = w;
-	shape.y2 = h;
+	rigkit::ecs::CRectangle shape;
+	shape.width = w;
+	shape.height = h;
 	return spawnShape(ecs, shape, style, at(x, y), name);
 }
 
 entt::entity makeEllipse(rigkit::MEcs& ecs, float x, float y, float w, float h,
 						 const rigkit::ecs::CDrawStyle& style, const std::string& name) {
-	rigkit::ecs::CShape shape;
-	shape.type = rigkit::ecs::CShape::Type::Ellipse;
-	shape.x1 = 0.0f;
-	shape.y1 = 0.0f;
-	shape.x2 = w;
-	shape.y2 = h;
-	// Ellipse is centered in present path via x1/y1 box — store top-left like rect.
-	return spawnShape(ecs, shape, style, at(x - w * 0.5f, y - h * 0.5f), name);
+	rigkit::ecs::CEllipse shape;
+	shape.rx = w * 0.5f;
+	shape.ry = h * 0.5f;
+	return spawnShape(ecs, shape, style, at(x, y), name);
 }
 
 entt::entity makeCircle(rigkit::MEcs& ecs, float x, float y, float radius,
@@ -78,13 +72,60 @@ entt::entity makeCircle(rigkit::MEcs& ecs, float x, float y, float radius,
 
 entt::entity makeLine(rigkit::MEcs& ecs, float x1, float y1, float x2, float y2,
 					  const rigkit::ecs::CDrawStyle& style, const std::string& name) {
-	rigkit::ecs::CShape shape;
-	shape.type = rigkit::ecs::CShape::Type::Line;
+	rigkit::ecs::CLine shape;
 	shape.x1 = x1;
 	shape.y1 = y1;
 	shape.x2 = x2;
 	shape.y2 = y2;
 	return spawnShape(ecs, shape, style, at(0, 0), name);
+}
+
+entt::entity makeRegularPolygon(rigkit::MEcs& ecs, float x, float y, float radius, int sides,
+								float rotation, const rigkit::ecs::CDrawStyle& style,
+								const std::string& name) {
+	rigkit::ecs::CRegularPolygon shape;
+	shape.radius = radius;
+	shape.sides = sides;
+	shape.rotationDegrees = rotation;
+	return spawnShape(ecs, shape, style, at(x, y), name);
+}
+
+entt::entity makeStar(rigkit::MEcs& ecs, float x, float y, float radius, float innerRadius,
+					  int points, float rotation, const rigkit::ecs::CDrawStyle& style,
+					  const std::string& name) {
+	rigkit::ecs::CStar shape;
+	shape.radius = radius;
+	shape.innerRadius = innerRadius;
+	shape.points = points;
+	shape.rotationDegrees = rotation;
+	return spawnShape(ecs, shape, style, at(x, y), name);
+}
+
+entt::entity makePolygon(rigkit::MEcs& ecs, std::vector<glm::vec2> points, bool closed,
+						 const rigkit::ecs::CDrawStyle& style, const std::string& name) {
+	rigkit::ecs::CPolygon shape;
+	shape.points = std::move(points);
+	shape.closed = closed;
+	return spawnShape(ecs, std::move(shape), style, at(0, 0), name);
+}
+
+entt::entity makeArc(rigkit::MEcs& ecs, float x, float y, float radius, float startAngle,
+					 float endAngle, bool pie, const rigkit::ecs::CDrawStyle& style,
+					 const std::string& name) {
+	rigkit::ecs::CArc shape;
+	shape.radius = radius;
+	shape.startAngleDegrees = startAngle;
+	shape.endAngleDegrees = endAngle;
+	shape.pie = pie;
+	return spawnShape(ecs, shape, style, at(x, y), name);
+}
+
+entt::entity makeRing(rigkit::MEcs& ecs, float x, float y, float outerRadius, float innerRadius,
+					  const rigkit::ecs::CDrawStyle& style, const std::string& name) {
+	rigkit::ecs::CRing shape;
+	shape.outerRadius = outerRadius;
+	shape.innerRadius = innerRadius;
+	return spawnShape(ecs, shape, style, at(x, y), name);
 }
 
 entt::entity makeMesh(rigkit::MEcs& ecs, std::vector<glm::vec3> positions,
@@ -220,6 +261,39 @@ entt::entity makeLine(float x1, float y1, float x2, float y2,
 					  const rigkit::ecs::CDrawStyle& style, const std::string& name) {
 	auto* ecs = boundEcs();
 	return ecs ? makeLine(*ecs, x1, y1, x2, y2, style, name) : entt::null;
+}
+
+entt::entity makeRegularPolygon(float x, float y, float radius, int sides, float rotation,
+								const rigkit::ecs::CDrawStyle& style, const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeRegularPolygon(*ecs, x, y, radius, sides, rotation, style, name)
+			   : entt::null;
+}
+
+entt::entity makeStar(float x, float y, float radius, float innerRadius, int points,
+					  float rotation, const rigkit::ecs::CDrawStyle& style,
+					  const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeStar(*ecs, x, y, radius, innerRadius, points, rotation, style, name)
+			   : entt::null;
+}
+
+entt::entity makePolygon(std::vector<glm::vec2> points, bool closed,
+						 const rigkit::ecs::CDrawStyle& style, const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makePolygon(*ecs, std::move(points), closed, style, name) : entt::null;
+}
+
+entt::entity makeArc(float x, float y, float radius, float startAngle, float endAngle, bool pie,
+					 const rigkit::ecs::CDrawStyle& style, const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeArc(*ecs, x, y, radius, startAngle, endAngle, pie, style, name) : entt::null;
+}
+
+entt::entity makeRing(float x, float y, float outerRadius, float innerRadius,
+					  const rigkit::ecs::CDrawStyle& style, const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeRing(*ecs, x, y, outerRadius, innerRadius, style, name) : entt::null;
 }
 
 entt::entity makeMesh(std::vector<glm::vec3> positions, std::vector<uint32_t> indices,

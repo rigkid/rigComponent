@@ -21,6 +21,7 @@
 #include "CRectangle.h"
 #include "CRegularPolygon.h"
 #include "CRing.h"
+#include "CSphere.h"
 #include "CStar.h"
 #include "CTransform.h"
 #include "ecs/MEcs.h"
@@ -218,6 +219,20 @@ entt::entity makeMeshBox(float size = 1.0f,
 entt::entity makeMeshBox(rigkit::MEcs& ecs, float size = 1.0f,
 						 const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
 						 const std::string& name = {});
+
+/**
+ * @brief Icosphere entity (`CSphere`), radius / subdivisions stay live data.
+ * @details Present rebuilds triangles from `CSphere` each frame — same parametric
+ * deal as `makeRegularPolygon` / `makeStar`, just in 3D. Want per-face colors or a
+ * one-off hand-authored form instead? Build a `CMesh` directly (see `makeMesh`).
+ */
+entt::entity makeSphere(float radius = 1.0f, int subdivisions = 1,
+						const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
+						const std::string& name = {});
+
+entt::entity makeSphere(rigkit::MEcs& ecs, float radius = 1.0f, int subdivisions = 1,
+						const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
+						const std::string& name = {});
 
 /**
  * @brief Aim a transform at a world point (writes position + rotation quat).

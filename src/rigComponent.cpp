@@ -27,6 +27,7 @@
 #include "CRelationship.h"
 #include "CRing.h"
 #include "CSelection.h"
+#include "CSphere.h"
 #include "CStar.h"
 #include "CText.h"
 #include "CTransform.h"
@@ -79,6 +80,7 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CRing>("Ring", true);
 	ecs->registerComponent<ecs::CPath>("Path", true);
 	ecs->registerComponent<ecs::CMesh>("Mesh", true);
+	ecs->registerComponent<ecs::CSphere>("Sphere", true);
 	ecs->registerComponent<ecs::CDrawStyle>("DrawStyle", true);
 	ecs->registerComponent<ecs::CSelection>("Selection", true);
 	ecs->registerComponent<ecs::CSelectable>("Selectable", true);

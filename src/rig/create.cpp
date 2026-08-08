@@ -176,6 +176,14 @@ entt::entity makeMeshBox(rigkit::MEcs& ecs, float size, const rigkit::ecs::CDraw
 	return makeMesh(ecs, positions, indices, rigkit::ecs::CMesh::Mode::Triangles, style, name);
 }
 
+entt::entity makeSphere(rigkit::MEcs& ecs, float radius, int subdivisions,
+						const rigkit::ecs::CDrawStyle& style, const std::string& name) {
+	rigkit::ecs::CSphere shape;
+	shape.radius = radius;
+	shape.subdivisions = subdivisions;
+	return spawnShape(ecs, shape, style, at(0, 0, 0), name);
+}
+
 entt::entity makeCamera(rigkit::MEcs& ecs, glm::vec3 position, bool active,
 						const std::string& name) {
 	auto e = ecs.createEntity(name);
@@ -320,6 +328,12 @@ entt::entity makeMeshBox(float size, const rigkit::ecs::CDrawStyle& style,
 						 const std::string& name) {
 	auto* ecs = boundEcs();
 	return ecs ? makeMeshBox(*ecs, size, style, name) : entt::null;
+}
+
+entt::entity makeSphere(float radius, int subdivisions, const rigkit::ecs::CDrawStyle& style,
+						const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeSphere(*ecs, radius, subdivisions, style, name) : entt::null;
 }
 
 entt::entity makeCamera(glm::vec3 position, bool active, const std::string& name) {

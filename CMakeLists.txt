@@ -6,6 +6,7 @@ add_library(${PACK_NAME} STATIC
 	src/rigComponent.h
 	src/PrimitiveBounds.cpp
 	src/PrimitiveVertices.cpp
+	src/PrimitiveVertices3D.cpp
 	src/rig/create.cpp
 )
 target_link_libraries(${PACK_NAME} PUBLIC rigkit)

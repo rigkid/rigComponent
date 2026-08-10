@@ -21,6 +21,7 @@
 #include "CLayer.h"
 #include "CLine.h"
 #include "CPath.h"
+#include "CCurve.h"
 #include "CPolygon.h"
 #include "CRectangle.h"
 #include "CRegularPolygon.h"
@@ -79,6 +80,7 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CArc>("Arc", true);
 	ecs->registerComponent<ecs::CRing>("Ring", true);
 	ecs->registerComponent<ecs::CPath>("Path", true);
+	ecs->registerComponent<ecs::CCurve>("Curve", true);
 	ecs->registerComponent<ecs::CMesh>("Mesh", true);
 	ecs->registerComponent<ecs::CSphere>("Sphere", true);
 	ecs->registerComponent<ecs::CDrawStyle>("DrawStyle", true);

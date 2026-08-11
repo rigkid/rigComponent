@@ -9,6 +9,8 @@ namespace ecs {
  * non-empty type). Parenting stays on `CRelationship`; pose on `CTransform`.
  */
 struct CGroup {
+	static constexpr bool kNoProperties = true;
+
 	uint8_t _ = 0;
 };
 

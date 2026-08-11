@@ -9,7 +9,12 @@
 #include "CCode.h"
 #include "CDriveHint.h"
 #include "CEllipse.h"
+#include "CModBinding.h"
+#include "CModLfo.h"
+#include "CMusicClock.h"
+#include "CMusicTransport.h"
 #include "COrbitDrive.h"
+#include "CTween.h"
 #include "CSelectable.h"
 #include "CDrawStyle.h"
 #include "CGroup.h"
@@ -69,6 +74,11 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CLight>("Light", true);
 	ecs->registerComponent<ecs::CDriveHint>("DriveHint", true);
 	ecs->registerComponent<ecs::COrbitDrive>("OrbitDrive", true);
+	ecs->registerComponent<ecs::CModLfo>("ModLfo", true);
+	ecs->registerComponent<ecs::CModBinding>("ModBinding", true);
+	ecs->registerComponent<ecs::CTween>("Tween", true);
+	ecs->registerComponent<ecs::CMusicClock>("MusicClock", true);
+	ecs->registerComponent<ecs::CMusicTransport>("MusicTransport", true);
 	ecs->registerComponent<ecs::CPalette>("Palette", true);
 	ecs->registerComponent<ecs::CIndexedAtlas>("IndexedAtlas", true);
 	ecs->registerComponent<ecs::CRectangle>("Rectangle", true);

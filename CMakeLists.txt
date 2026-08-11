@@ -4,6 +4,7 @@ string(JSON PACK_NAME GET "${PACK_JSON}" name)
 add_library(${PACK_NAME} STATIC
 	src/rigComponent.cpp
 	src/rigComponent.h
+	src/EntityProperty.cpp
 	src/PrimitiveBounds.cpp
 	src/PrimitiveVertices.cpp
 	src/PrimitiveVertices3D.cpp

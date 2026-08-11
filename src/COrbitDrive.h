@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include <glm/glm.hpp>
+
 #include "ecs/PropertyReflection.h"
 
 namespace rigkit {
@@ -9,18 +11,23 @@ namespace ecs {
 
 /**
  * @brief Orbit framing params (yaw speed + eye radius/height).
- * @details App or node `ref.*` sinks write these; Update reads them to pose the camera.
- * Speaks portable orbit-drive fields — no window / graph pointers.
+ * @details `SOrbitDrive` poses `CTransform` each Update. Node `ref.*` sinks may
+ * write Speed/Radius/Height. `yaw` is a runtime cache (not reflected).
  */
 struct COrbitDrive {
 	float speed = 0.35f;
 	float radius = 5.6f;
 	float height = 2.1f;
+	bool enabled = true;
+	glm::vec3 target{0.f, 0.5f, 0.f};
+	float yaw = 0.f; ///< Runtime; not serialized / not in GetProperties
 
 	std::vector<sProp> GetProperties() {
 		return {{0, "Speed", EPT_FLOAT, &speed},
 				{1, "Radius", EPT_FLOAT, &radius},
-				{2, "Height", EPT_FLOAT, &height}};
+				{2, "Height", EPT_FLOAT, &height},
+				{3, "Enabled", EPT_BOOL, &enabled},
+				{4, "Target", EPT_VEC3, &target}};
 	}
 };
 

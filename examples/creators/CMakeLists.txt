@@ -6,7 +6,7 @@ project(${_RIGKIT_EXAMPLE_NAME} VERSION 0.1.0 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# packs/<pack>/examples/<hero> → host root
+# packs/<pack>/examples/<name> → host root
 set(RIGKIT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../.." CACHE PATH "Path to RigKit checkout")
 if(NOT EXISTS "${RIGKIT_DIR}/CMakeLists.txt")
 	message(FATAL_ERROR "RigKit not found at RIGKIT_DIR=${RIGKIT_DIR}")

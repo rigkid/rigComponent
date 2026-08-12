@@ -10,6 +10,7 @@
 #include "CRectangle.h"
 #include "CRegularPolygon.h"
 #include "CRing.h"
+#include "CSpline.h"
 #include "CStar.h"
 #include "ecs/MEcs.h"
 
@@ -39,6 +40,7 @@ Bounds2D boundsOf(const CPolygon& shape);
 Bounds2D boundsOf(const CRegularPolygon& shape);
 Bounds2D boundsOf(const CStar& shape);
 Bounds2D boundsOf(const CArc& shape);
+Bounds2D boundsOf(const CSpline& shape);
 Bounds2D boundsOf(const CRing& shape);
 
 /**

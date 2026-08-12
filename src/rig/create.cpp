@@ -113,7 +113,7 @@ entt::entity makeArc(rigkit::MEcs& ecs, float x, float y, float radius, float st
 					 float endAngle, bool pie, const rigkit::ecs::CDrawStyle& style,
 					 const std::string& name) {
 	rigkit::ecs::CArc shape;
-	shape.radius = radius;
+	shape.setRadius(radius);
 	shape.startAngleDegrees = startAngle;
 	shape.endAngleDegrees = endAngle;
 	shape.pie = pie;

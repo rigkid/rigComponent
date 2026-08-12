@@ -74,6 +74,11 @@ Bounds2D boundsOf(const CArc& shape) {
 	return fromPoints(points.data(), points.size());
 }
 
+Bounds2D boundsOf(const CSpline& shape) {
+	const auto points = verticesOf(shape);
+	return fromPoints(points.data(), points.size());
+}
+
 Bounds2D boundsOf(const CRing& shape) {
 	return fromCorners({shape.cx - shape.outerRadius, shape.cy - shape.outerRadius},
 					   {shape.cx + shape.outerRadius, shape.cy + shape.outerRadius});
@@ -101,6 +106,9 @@ Bounds2D shapeBounds2D(MEcs& ecs, entt::entity entity) {
 	if (ecs.hasComponent<CArc>(entity)) {
 		return boundsOf(ecs.getComponent<CArc>(entity));
 	}
+	if (ecs.hasComponent<CSpline>(entity)) {
+		return boundsOf(ecs.getComponent<CSpline>(entity));
+	}
 	if (ecs.hasComponent<CRing>(entity)) {
 		return boundsOf(ecs.getComponent<CRing>(entity));
 	}
@@ -111,7 +119,8 @@ bool hasShape2D(MEcs& ecs, entt::entity entity) {
 	return ecs.hasComponent<CRectangle>(entity) || ecs.hasComponent<CEllipse>(entity) ||
 		   ecs.hasComponent<CLine>(entity) || ecs.hasComponent<CPolygon>(entity) ||
 		   ecs.hasComponent<CRegularPolygon>(entity) || ecs.hasComponent<CStar>(entity) ||
-		   ecs.hasComponent<CArc>(entity) || ecs.hasComponent<CRing>(entity);
+		   ecs.hasComponent<CArc>(entity) || ecs.hasComponent<CSpline>(entity) ||
+		   ecs.hasComponent<CRing>(entity);
 }
 
 } // namespace ecs

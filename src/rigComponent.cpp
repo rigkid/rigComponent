@@ -3,6 +3,7 @@
 #include "rigComponent.h"
 
 #include "CArc.h"
+#include "CSpline.h"
 #include "CAssetRef.h"
 #include "CCamera.h"
 #include "CCanvas.h"
@@ -46,9 +47,7 @@
 
 namespace rigkit {
 
-rigComponent::rigComponent() : IPack("rigComponent") {
-	setDescription("Data-only ECS components (NO CODE JUST DATA)");
-}
+rigComponent::rigComponent() : IPack("rigComponent") {}
 
 bool rigComponent::init() {
 	spdlog::info("[rigComponent] init (data-only pack)");
@@ -88,6 +87,7 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CRegularPolygon>("RegularPolygon", true);
 	ecs->registerComponent<ecs::CStar>("Star", true);
 	ecs->registerComponent<ecs::CArc>("Arc", true);
+	ecs->registerComponent<ecs::CSpline>("Spline", true);
 	ecs->registerComponent<ecs::CRing>("Ring", true);
 	ecs->registerComponent<ecs::CPath>("Path", true);
 	ecs->registerComponent<ecs::CCurve>("Curve", true);

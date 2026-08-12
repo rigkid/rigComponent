@@ -6,6 +6,7 @@
 #include "CArc.h"
 #include "CRegularPolygon.h"
 #include "CRing.h"
+#include "CSpline.h"
 #include "CStar.h"
 
 namespace rigkit {
@@ -30,9 +31,14 @@ std::vector<glm::vec2> verticesOf(const CStar& shape);
 /**
  * @brief Arc as a polyline from start angle to end angle.
  * @details Includes the centre as the final point when `pie` is set, so the
- * result closes into a wedge.
+ * result closes into a wedge. Uses `rx`/`ry` (elliptical when unequal).
  */
 std::vector<glm::vec2> verticesOf(const CArc& shape, int segments = 0);
+
+/**
+ * @brief Spline samples along the knot domain (closed loops repeat the first point).
+ */
+std::vector<glm::vec2> verticesOf(const CSpline& shape, int segments = 0);
 
 /** @brief Outer and inner rims of a ring, same winding and matching lengths. */
 void rimsOf(const CRing& shape, std::vector<glm::vec2>& outer, std::vector<glm::vec2>& inner,
@@ -40,3 +46,4 @@ void rimsOf(const CRing& shape, std::vector<glm::vec2>& outer, std::vector<glm::
 
 } // namespace ecs
 } // namespace rigkit
+

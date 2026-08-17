@@ -4,10 +4,23 @@
 
 #include "CArc.h"
 #include "CSpline.h"
+#include "CSpline3d.h"
+#include "CNurbsSurface.h"
+#include "CCadBox.h"
+#include "CCadCylinder.h"
+#include "CCadSphere.h"
+#include "CCadExtrude.h"
+#include "CCadRevolve.h"
+#include "CCadBoolean.h"
+#include "CCadFillet.h"
+#include "CCadChamfer.h"
 #include "CAssetRef.h"
 #include "CCamera.h"
 #include "CCanvas.h"
+#include "CCastReceiver.h"
 #include "CCode.h"
+#include "CScreenCast.h"
+#include "CScreenCastReceive.h"
 #include "CDriveHint.h"
 #include "CEllipse.h"
 #include "CModBinding.h"
@@ -21,6 +34,8 @@
 #include "CGroup.h"
 #include "CLight.h"
 #include "CFaceSelection.h"
+#include "CVertexSelection.h"
+#include "CEdgeSelection.h"
 #include "CIndexedAtlas.h"
 #include "CPalette.h"
 #include "CMesh.h"
@@ -44,6 +59,11 @@
 #include "core/pack/PackRegistry.h"
 #include "ecs/MEcs.h"
 #include "ecs/components/CGuide.h"
+
+#if __has_include("rigProject.h")
+#include "ComponentSerializers.h"
+#include "rigProject.h"
+#endif
 
 namespace rigkit {
 
@@ -88,6 +108,16 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CStar>("Star", true);
 	ecs->registerComponent<ecs::CArc>("Arc", true);
 	ecs->registerComponent<ecs::CSpline>("Spline", true);
+	ecs->registerComponent<ecs::CSpline3d>("Spline3d", true);
+	ecs->registerComponent<ecs::CNurbsSurface>("NurbsSurface", true);
+	ecs->registerComponent<ecs::CCadBox>("CadBox", true);
+	ecs->registerComponent<ecs::CCadCylinder>("CadCylinder", true);
+	ecs->registerComponent<ecs::CCadSphere>("CadSphere", true);
+	ecs->registerComponent<ecs::CCadExtrude>("CadExtrude", true);
+	ecs->registerComponent<ecs::CCadRevolve>("CadRevolve", true);
+	ecs->registerComponent<ecs::CCadBoolean>("CadBoolean", true);
+	ecs->registerComponent<ecs::CCadFillet>("CadFillet", true);
+	ecs->registerComponent<ecs::CCadChamfer>("CadChamfer", true);
 	ecs->registerComponent<ecs::CRing>("Ring", true);
 	ecs->registerComponent<ecs::CPath>("Path", true);
 	ecs->registerComponent<ecs::CCurve>("Curve", true);
@@ -99,12 +129,25 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CGroup>("Group", true);
 	ecs->registerComponent<ecs::CLayer>("Layer", true);
 	ecs->registerComponent<ecs::CFaceSelection>("FaceSelection", true);
+	ecs->registerComponent<ecs::CVertexSelection>("VertexSelection", true);
+	ecs->registerComponent<ecs::CEdgeSelection>("EdgeSelection", true);
 	ecs->registerComponent<ecs::CGuide>("Guide", true);
 	ecs->registerComponent<ecs::CAssetRef>("AssetRef", true);
 	ecs->registerComponent<ecs::CCode>("Code", true);
 	ecs->registerComponent<ecs::CText>("Text", true);
+	ecs->registerComponent<ecs::CScreenCast>("ScreenCast", true);
+	ecs->registerComponent<ecs::CScreenCastReceive>("ScreenCastReceive", true);
+	ecs->registerComponent<ecs::CCastReceiver>("CastReceiver", true);
 	// Canvas POD lives here; still non-portable until a rigProject codec lands.
 	ecs->registerComponent<ecs::CCanvas>("Canvas", false);
+
+#if __has_include("rigProject.h")
+	// Soft: document pack may be absent. No pack.json edge — rigProject depends
+	// on us, so our setup runs first; the instance already exists for codecs.
+	if (auto* doc = getPack<rigProject>("rigProject")) {
+		registerComponentSerializers(*doc);
+	}
+#endif
 
 	spdlog::info("[rigComponent] registered {} component types", ecs->componentTypes().size());
 }

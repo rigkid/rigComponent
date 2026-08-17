@@ -4,6 +4,7 @@
 #include "CRelationship.h"
 #include "CSelectable.h"
 #include "CSelection.h"
+#include "MeshFaces.h"
 
 namespace rig {
 namespace {
@@ -137,6 +138,7 @@ entt::entity makeMesh(rigkit::MEcs& ecs, std::vector<glm::vec3> positions,
 	mesh.mode = mode;
 	mesh.positions = std::move(positions);
 	mesh.indices = std::move(indices);
+	rigkit::ecs::meshFinishFaces(mesh);
 	ecs.addComponent<rigkit::ecs::CMesh>(e, std::move(mesh));
 	ecs.addComponent<rigkit::ecs::CDrawStyle>(e, style);
 	return e;

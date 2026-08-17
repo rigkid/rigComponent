@@ -10,7 +10,7 @@ namespace ecs {
 
 /**
  * @brief Selected triangle face indices on a mesh entity.
- * @details Indices into the triangle list (same order as `facePalette` / face walk).
+ * @details Indices into authored faces (`CMesh::loopSizes`, else triangles).
  */
 struct CFaceSelection {
 	std::vector<uint32_t> faces;

@@ -8,8 +8,13 @@
 #include <vector>
 
 #include "CArc.h"
+#include "CCadBoolean.h"
+#include "CCadBox.h"
+#include "CCadCylinder.h"
+#include "CCadSphere.h"
 #include "CCamera.h"
 #include "CDrawStyle.h"
+#include "COrbitDrive.h"
 #include "CEllipse.h"
 #include "CGroup.h"
 #include "CIndexedAtlas.h"
@@ -221,6 +226,18 @@ entt::entity makeMeshBox(rigkit::MEcs& ecs, float size = 1.0f,
 						 const std::string& name = {});
 
 /**
+ * @brief XZ line grid (construction plane). Skipped by triangle pick.
+ * @param half Cells from origin to each edge. @param y Plane height.
+ */
+entt::entity makeMeshGrid(int half = 6, float y = 0.f,
+						  const rigkit::ecs::CDrawStyle& style = fill(0.32f, 0.34f, 0.38f),
+						  const std::string& name = {});
+
+entt::entity makeMeshGrid(rigkit::MEcs& ecs, int half = 6, float y = 0.f,
+						  const rigkit::ecs::CDrawStyle& style = fill(0.32f, 0.34f, 0.38f),
+						  const std::string& name = {});
+
+/**
  * @brief Icosphere entity (`CSphere`), radius / subdivisions stay live data.
  * @details Present rebuilds triangles from `CSphere` each frame — same parametric
  * deal as `makeRegularPolygon` / `makeStar`, just in 3D. Want per-face colors or a
@@ -255,6 +272,55 @@ entt::entity makeCamera(glm::vec3 position, bool active = true, const std::strin
 
 entt::entity makeCamera(rigkit::MEcs& ecs, glm::vec3 position, bool active = true,
 						const std::string& name = {});
+
+/**
+ * @brief Active camera with `COrbitDrive`, posed at yaw 0 looking at `target`.
+ * @details Writes `CTransform` + `CCamera` + `COrbitDrive`. Auto-orbit starts
+ * off (`enabled` false); set it true for a show-mode spin. `SOrbitDrive` yaws
+ * when enabled. Mouse orbit / pan / dolly: `rig::orbitNavigate` in rigSystems.
+ * @param pitch Radians; ~0.36 is a slight downward look.
+ */
+entt::entity makeOrbitCamera(glm::vec3 target = {0.f, 0.f, 0.f}, float radius = 5.6f,
+							 float pitch = 0.36f, bool active = true,
+							 const std::string& name = {});
+
+entt::entity makeOrbitCamera(rigkit::MEcs& ecs, glm::vec3 target = {0.f, 0.f, 0.f},
+							 float radius = 5.6f, float pitch = 0.36f, bool active = true,
+							 const std::string& name = {});
+
+/**
+ * @brief CAD box solid (`CCadBox`). No draw style — bake or add `CDrawStyle`.
+ */
+entt::entity makeCadBox(float sizeX, float sizeY, float sizeZ, bool center = true,
+						const std::string& name = {});
+
+entt::entity makeCadBox(rigkit::MEcs& ecs, float sizeX, float sizeY, float sizeZ,
+						bool center = true, const std::string& name = {});
+
+/** @brief CAD cylinder (`CCadCylinder`), height along +Y. */
+entt::entity makeCadCylinder(float radius, float height, bool center = true,
+							 const std::string& name = {});
+
+entt::entity makeCadCylinder(rigkit::MEcs& ecs, float radius, float height, bool center = true,
+							 const std::string& name = {});
+
+/** @brief CAD sphere (`CCadSphere`) at the local origin. */
+entt::entity makeCadSphere(float radius, const std::string& name = {});
+
+entt::entity makeCadSphere(rigkit::MEcs& ecs, float radius, const std::string& name = {});
+
+/**
+ * @brief CAD boolean (`CCadBoolean`). Operand strings are entity names.
+ * @details Difference is `operands[0]` minus the rest. Adds `CDrawStyle`.
+ */
+entt::entity makeCadBoolean(rigkit::ecs::CCadBoolean::Op op, std::vector<std::string> operands,
+							const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
+							const std::string& name = {});
+
+entt::entity makeCadBoolean(rigkit::MEcs& ecs, rigkit::ecs::CCadBoolean::Op op,
+							std::vector<std::string> operands,
+							const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
+							const std::string& name = {});
 
 /**
  * @brief Light entity (`CTransform` + `CLight`).

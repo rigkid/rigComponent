@@ -1,4 +1,5 @@
 #include "rig/create.h"
+#include <cmath>
 #include <spdlog/spdlog.h>
 #include "CGroup.h"
 #include "CRelationship.h"
@@ -198,6 +199,94 @@ entt::entity makeCamera(rigkit::MEcs& ecs, glm::vec3 position, bool active,
 	return e;
 }
 
+entt::entity makeOrbitCamera(rigkit::MEcs& ecs, glm::vec3 target, float radius, float pitch,
+							 bool active, const std::string& name) {
+	const float cp = std::cos(pitch);
+	const float sp = std::sin(pitch);
+	const glm::vec3 eye = target + glm::vec3{0.f, sp * radius, cp * radius};
+	auto e = makeCamera(ecs, eye, active, name);
+	rigkit::ecs::COrbitDrive orbit;
+	orbit.enabled = false;
+	orbit.radius = radius;
+	orbit.pitch = pitch;
+	orbit.height = sp * radius;
+	orbit.target = target;
+	lookAt(ecs.getComponent<rigkit::ecs::CTransform>(e), eye, target);
+	ecs.addComponent(e, orbit);
+	return e;
+}
+
+entt::entity makeCadBox(rigkit::MEcs& ecs, float sizeX, float sizeY, float sizeZ, bool center,
+						const std::string& name) {
+	auto e = ecs.createEntity(name);
+	ecs.addComponent(e, rigkit::ecs::CTransform{});
+	rigkit::ecs::CCadBox box;
+	box.sizeX = sizeX;
+	box.sizeY = sizeY;
+	box.sizeZ = sizeZ;
+	box.center = center;
+	ecs.addComponent(e, box);
+	return e;
+}
+
+entt::entity makeCadCylinder(rigkit::MEcs& ecs, float radius, float height, bool center,
+							 const std::string& name) {
+	auto e = ecs.createEntity(name);
+	ecs.addComponent(e, rigkit::ecs::CTransform{});
+	rigkit::ecs::CCadCylinder cyl;
+	cyl.radius = radius;
+	cyl.height = height;
+	cyl.center = center;
+	ecs.addComponent(e, cyl);
+	return e;
+}
+
+entt::entity makeCadSphere(rigkit::MEcs& ecs, float radius, const std::string& name) {
+	auto e = ecs.createEntity(name);
+	ecs.addComponent(e, rigkit::ecs::CTransform{});
+	rigkit::ecs::CCadSphere sphere;
+	sphere.radius = radius;
+	ecs.addComponent(e, sphere);
+	return e;
+}
+
+entt::entity makeCadBoolean(rigkit::MEcs& ecs, rigkit::ecs::CCadBoolean::Op op,
+							std::vector<std::string> operands,
+							const rigkit::ecs::CDrawStyle& style, const std::string& name) {
+	auto e = ecs.createEntity(name);
+	ecs.addComponent(e, rigkit::ecs::CTransform{});
+	ecs.addComponent(e, style);
+	rigkit::ecs::CCadBoolean b;
+	b.op = op;
+	b.operands = std::move(operands);
+	ecs.addComponent(e, std::move(b));
+	return e;
+}
+
+entt::entity makeMeshGrid(rigkit::MEcs& ecs, int half, float y, const rigkit::ecs::CDrawStyle& style,
+						  const std::string& name) {
+	if (half < 1) {
+		half = 1;
+	}
+	std::vector<glm::vec3> positions;
+	std::vector<uint32_t> indices;
+	uint32_t v = 0;
+	const float h = static_cast<float>(half);
+	for (int i = -half; i <= half; ++i) {
+		const float t = static_cast<float>(i);
+		positions.push_back({t, y, -h});
+		positions.push_back({t, y, h});
+		indices.push_back(v++);
+		indices.push_back(v++);
+		positions.push_back({-h, y, t});
+		positions.push_back({h, y, t});
+		indices.push_back(v++);
+		indices.push_back(v++);
+	}
+	return makeMesh(ecs, std::move(positions), std::move(indices),
+					rigkit::ecs::CMesh::Mode::Lines, style, name);
+}
+
 entt::entity makeLight(rigkit::MEcs& ecs, glm::vec3 position, rigkit::ecs::CLight::Type type,
 					   const std::string& name) {
 	auto e = ecs.createEntity(name);
@@ -341,6 +430,40 @@ entt::entity makeSphere(float radius, int subdivisions, const rigkit::ecs::CDraw
 entt::entity makeCamera(glm::vec3 position, bool active, const std::string& name) {
 	auto* ecs = boundEcs();
 	return ecs ? makeCamera(*ecs, position, active, name) : entt::null;
+}
+
+entt::entity makeOrbitCamera(glm::vec3 target, float radius, float pitch, bool active,
+							 const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeOrbitCamera(*ecs, target, radius, pitch, active, name) : entt::null;
+}
+
+entt::entity makeCadBox(float sizeX, float sizeY, float sizeZ, bool center,
+						const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeCadBox(*ecs, sizeX, sizeY, sizeZ, center, name) : entt::null;
+}
+
+entt::entity makeCadCylinder(float radius, float height, bool center, const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeCadCylinder(*ecs, radius, height, center, name) : entt::null;
+}
+
+entt::entity makeCadSphere(float radius, const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeCadSphere(*ecs, radius, name) : entt::null;
+}
+
+entt::entity makeCadBoolean(rigkit::ecs::CCadBoolean::Op op, std::vector<std::string> operands,
+							const rigkit::ecs::CDrawStyle& style, const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeCadBoolean(*ecs, op, std::move(operands), style, name) : entt::null;
+}
+
+entt::entity makeMeshGrid(int half, float y, const rigkit::ecs::CDrawStyle& style,
+						  const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeMeshGrid(*ecs, half, y, style, name) : entt::null;
 }
 
 entt::entity makeLight(glm::vec3 position, rigkit::ecs::CLight::Type type,

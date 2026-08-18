@@ -17,28 +17,4 @@ target_link_libraries(${PACK_NAME} PUBLIC rigkit)
 target_include_directories(${PACK_NAME} PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/src>
 )
-
-# Soft sibling: register .rig codecs when rigProject is present. No pack.json edge
-# (rigProject already depends on this pack). Apps that load both resolve the
-# symbols at final link; setup() skips registration if the document pack is absent.
-set(_rigProject_src "${CMAKE_CURRENT_LIST_DIR}/../rigProject/src")
-if(EXISTS "${_rigProject_src}/rigProject.h")
-	target_sources(${PACK_NAME} PRIVATE
-		src/ComponentSerializers.cpp
-		src/ComponentSerializers.h
-	)
-	target_include_directories(${PACK_NAME} PRIVATE
-		$<BUILD_INTERFACE:${_rigProject_src}>
-	)
-endif()
-
-# One TU registers every component; MinGW/MSVC Debug hits the PE COFF section limit
-# without big-obj (relocation truncated to fit: IMAGE_REL_AMD64_ADDR32NB).
-if(MSVC)
-	target_compile_options(${PACK_NAME} PRIVATE /bigobj)
-elseif(MINGW OR (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU"))
-	target_compile_options(${PACK_NAME} PRIVATE -Wa,-mbig-obj)
-elseif(WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-	target_compile_options(${PACK_NAME} PRIVATE -bigobj)
-endif()
 message(STATUS "Configured pack: ${PACK_NAME} (data-only components)")

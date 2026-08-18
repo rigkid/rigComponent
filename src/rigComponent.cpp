@@ -3,67 +3,62 @@
 #include "rigComponent.h"
 
 #include "CArc.h"
-#include "CSpline.h"
-#include "CSpline3d.h"
-#include "CNurbsSurface.h"
-#include "CCadBox.h"
-#include "CCadCylinder.h"
-#include "CCadSphere.h"
-#include "CCadExtrude.h"
-#include "CCadRevolve.h"
-#include "CCadBoolean.h"
-#include "CCadFillet.h"
-#include "CCadChamfer.h"
 #include "CAssetRef.h"
+#include "CCadBoolean.h"
+#include "CCadBox.h"
+#include "CCadChamfer.h"
+#include "CCadCylinder.h"
+#include "CCadExtrude.h"
+#include "CCadFillet.h"
+#include "CCadRevolve.h"
+#include "CCadSphere.h"
 #include "CCamera.h"
 #include "CCanvas.h"
 #include "CCastReceiver.h"
 #include "CCode.h"
-#include "CScreenCast.h"
-#include "CScreenCastReceive.h"
+#include "CCurve.h"
+#include "CDrawStyle.h"
 #include "CDriveHint.h"
+#include "CEdgeSelection.h"
 #include "CEllipse.h"
+#include "CFaceSelection.h"
+#include "CGroup.h"
+#include "CIndexedAtlas.h"
+#include "CLayer.h"
+#include "CLight.h"
+#include "CLine.h"
+#include "CMesh.h"
 #include "CModBinding.h"
 #include "CModLfo.h"
 #include "CMusicClock.h"
 #include "CMusicTransport.h"
+#include "CNurbsSurface.h"
 #include "COrbitDrive.h"
-#include "CTween.h"
-#include "CSelectable.h"
-#include "CDrawStyle.h"
-#include "CGroup.h"
-#include "CLight.h"
-#include "CFaceSelection.h"
-#include "CVertexSelection.h"
-#include "CEdgeSelection.h"
-#include "CIndexedAtlas.h"
 #include "CPalette.h"
-#include "CMesh.h"
-#include "CLayer.h"
-#include "CLine.h"
 #include "CPath.h"
-#include "CCurve.h"
 #include "CPolygon.h"
 #include "CRectangle.h"
 #include "CRegularPolygon.h"
 #include "CRelationship.h"
 #include "CRing.h"
+#include "CScreenCast.h"
+#include "CScreenCastReceive.h"
+#include "CSelectable.h"
 #include "CSelection.h"
 #include "CSphere.h"
+#include "CSpline.h"
+#include "CSpline3d.h"
 #include "CStar.h"
 #include "CText.h"
 #include "CTransform.h"
+#include "CTween.h"
+#include "CVertexSelection.h"
 #include "rig/create.h"
 
 #include "core/RigKitEngine.h"
 #include "core/pack/PackRegistry.h"
 #include "ecs/MEcs.h"
 #include "ecs/components/CGuide.h"
-
-#if __has_include("rigProject.h")
-#include "ComponentSerializers.h"
-#include "rigProject.h"
-#endif
 
 namespace rigkit {
 
@@ -140,14 +135,6 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CCastReceiver>("CastReceiver", true);
 	// Canvas POD lives here; still non-portable until a rigProject codec lands.
 	ecs->registerComponent<ecs::CCanvas>("Canvas", false);
-
-#if __has_include("rigProject.h")
-	// Soft: document pack may be absent. No pack.json edge — rigProject depends
-	// on us, so our setup runs first; the instance already exists for codecs.
-	if (auto* doc = getPack<rigProject>("rigProject")) {
-		registerComponentSerializers(*doc);
-	}
-#endif
 
 	spdlog::info("[rigComponent] registered {} component types", ecs->componentTypes().size());
 }

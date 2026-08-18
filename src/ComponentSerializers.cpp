@@ -50,6 +50,7 @@
 #include "EntityIdRemap.h"
 #include "MeshEdge.h"
 #include "MeshFaces.h"
+#include "PathEllipticArc.h"
 #include "ProjectJson.h"
 #include "core/TypeJson.h"
 #include "ecs/components/CGuide.h"
@@ -58,10 +59,10 @@
 namespace rigkit {
 namespace {
 
-using project::ordered_json;
 using project::entityIdFromString;
-using project::entityIdString;
 using project::EntityIdMap;
+using project::entityIdString;
+using project::ordered_json;
 bool serializeTransform(entt::registry& reg, entt::entity e, ordered_json& j) {
 	if (!reg.all_of<ecs::CTransform>(e)) {
 		return false;
@@ -910,8 +911,8 @@ bool serializePalette(entt::registry& reg, entt::entity e, ordered_json& j) {
 }
 
 bool deserializePalette(entt::registry& reg, entt::entity e, const ordered_json& j) {
-	ecs::CPalette p = reg.all_of<ecs::CPalette>(e) ? reg.get<ecs::CPalette>(e)
-												  : ecs::CPalette::default16();
+	ecs::CPalette p =
+		reg.all_of<ecs::CPalette>(e) ? reg.get<ecs::CPalette>(e) : ecs::CPalette::default16();
 	if (j.contains("colors") && j["colors"].is_array()) {
 		const size_t n = std::min(j["colors"].size(), static_cast<size_t>(ecs::CPalette::kCount));
 		for (size_t i = 0; i < n; ++i) {
@@ -936,8 +937,8 @@ bool serializePaletteShade(entt::registry& reg, entt::entity e, ordered_json& j)
 }
 
 bool deserializePaletteShade(entt::registry& reg, entt::entity e, const ordered_json& j) {
-	ecs::CPalette p = reg.all_of<ecs::CPalette>(e) ? reg.get<ecs::CPalette>(e)
-												  : ecs::CPalette::default16();
+	ecs::CPalette p =
+		reg.all_of<ecs::CPalette>(e) ? reg.get<ecs::CPalette>(e) : ecs::CPalette::default16();
 	if (j.contains("shadeNext") && j["shadeNext"].is_array()) {
 		const size_t n =
 			std::min(j["shadeNext"].size(), static_cast<size_t>(ecs::CPalette::kCount));
@@ -1352,6 +1353,8 @@ const char* pathCmdType(ecs::CPath::Cmd t) {
 		return "quadTo";
 	case ecs::CPath::Cmd::Close:
 		return "close";
+	case ecs::CPath::Cmd::ArcTo:
+		return "cubicTo";
 	}
 	return "moveTo";
 }
@@ -1362,7 +1365,8 @@ bool serializePath(entt::registry& reg, entt::entity e, ordered_json& j) {
 	}
 	const auto& path = reg.get<ecs::CPath>(e);
 	auto commands = ordered_json::array();
-	for (const auto& cmd : path.commands) {
+	glm::vec2 cur{0.f, 0.f};
+	auto emit = [&](const ecs::CPath::Command& cmd) {
 		ordered_json row;
 		row["type"] = pathCmdType(cmd.type);
 		switch (cmd.type) {
@@ -1380,9 +1384,25 @@ bool serializePath(entt::registry& reg, entt::entity e, ordered_json& j) {
 			row["control1"] = vec2ToJson(cmd.c1);
 			break;
 		case ecs::CPath::Cmd::Close:
+		case ecs::CPath::Cmd::ArcTo:
 			break;
 		}
 		commands.push_back(std::move(row));
+	};
+	for (const auto& cmd : path.commands) {
+		if (cmd.type == ecs::CPath::Cmd::ArcTo) {
+			ecs::CPath cubics;
+			path::appendCubics(path::fromCommand(cur, cmd), cubics);
+			for (const auto& cubic : cubics.commands) {
+				emit(cubic);
+			}
+			cur = cmd.p;
+			continue;
+		}
+		emit(cmd);
+		if (cmd.type != ecs::CPath::Cmd::Close) {
+			cur = cmd.p;
+		}
 	}
 	j["commands"] = std::move(commands);
 	return true;
@@ -1630,9 +1650,9 @@ bool deserializeCurve(entt::registry& reg, entt::entity e, const ordered_json& j
 }
 
 void registerInto(project::ComponentSerializerRegistry& registry) {
-	using project::addSerializer;
 	using project::addBoolMemberSerializer;
 	using project::addMarkerSerializer;
+	using project::addSerializer;
 	using project::EntityIdMap;
 
 	// Contract schemas where one exists; x.rigkit.* where the concept is ours.
@@ -1653,7 +1673,8 @@ void registerInto(project::ComponentSerializerRegistry& registry) {
 								deserializeModLfo);
 	addSerializer<ecs::CModBinding>(registry, "ModBinding", "rig.mod.binding", serializeModBinding,
 									deserializeModBinding);
-	addSerializer<ecs::CTween>(registry, "Tween", "rig.anim.tween", serializeTween, deserializeTween);
+	addSerializer<ecs::CTween>(registry, "Tween", "rig.anim.tween", serializeTween,
+							   deserializeTween);
 	addSerializer<ecs::CMusicClock>(registry, "MusicClock", "rig.music.clock", serializeMusicClock,
 									deserializeMusicClock);
 	addSerializer<ecs::CMusicTransport>(registry, "MusicTransport", "rig.music.transport",
@@ -1667,12 +1688,14 @@ void registerInto(project::ComponentSerializerRegistry& registry) {
 								   serializeRectangle, deserializeRectangle);
 	addSerializer<ecs::CEllipse>(registry, "Ellipse", "rig.geometry.ellipse", serializeEllipse,
 								 deserializeEllipse);
-	addSerializer<ecs::CLine>(registry, "Line", "rig.geometry.line", serializeLine, deserializeLine);
+	addSerializer<ecs::CLine>(registry, "Line", "rig.geometry.line", serializeLine,
+							  deserializeLine);
 	addSerializer<ecs::CPolygon>(registry, "Polygon", "rig.geometry.polygon", serializePolygon,
 								 deserializePolygon);
 	addSerializer<ecs::CRegularPolygon>(registry, "RegularPolygon", "rig.geometry.regular_polygon",
 										serializeRegularPolygon, deserializeRegularPolygon);
-	addSerializer<ecs::CStar>(registry, "Star", "rig.geometry.star", serializeStar, deserializeStar);
+	addSerializer<ecs::CStar>(registry, "Star", "rig.geometry.star", serializeStar,
+							  deserializeStar);
 	addSerializer<ecs::CArc>(registry, "Arc", "rig.geometry.arc", serializeArc, deserializeArc);
 	addSerializer<ecs::CSpline>(registry, "Spline", "rig.geometry.spline", serializeSpline,
 								deserializeSpline);
@@ -1680,9 +1703,10 @@ void registerInto(project::ComponentSerializerRegistry& registry) {
 								  deserializeSpline3d);
 	addSerializer<ecs::CNurbsSurface>(registry, "NurbsSurface", "rig.geometry.nurbs_surface",
 									  serializeNurbsSurface, deserializeNurbsSurface);
-	addSerializer<ecs::CCadBox>(registry, "CadBox", "rig.cad.box", serializeCadBox, deserializeCadBox);
-	addSerializer<ecs::CCadCylinder>(registry, "CadCylinder", "rig.cad.cylinder", serializeCadCylinder,
-									deserializeCadCylinder);
+	addSerializer<ecs::CCadBox>(registry, "CadBox", "rig.cad.box", serializeCadBox,
+								deserializeCadBox);
+	addSerializer<ecs::CCadCylinder>(registry, "CadCylinder", "rig.cad.cylinder",
+									 serializeCadCylinder, deserializeCadCylinder);
 	addSerializer<ecs::CCadSphere>(registry, "CadSphere", "rig.cad.sphere", serializeCadSphere,
 								   deserializeCadSphere);
 	addSerializer<ecs::CCadExtrude>(registry, "CadExtrude", "rig.cad.extrude", serializeCadExtrude,
@@ -1695,9 +1719,12 @@ void registerInto(project::ComponentSerializerRegistry& registry) {
 								   deserializeCadFillet);
 	addSerializer<ecs::CCadChamfer>(registry, "CadChamfer", "rig.cad.chamfer", serializeCadChamfer,
 									deserializeCadChamfer);
-	addSerializer<ecs::CRing>(registry, "Ring", "rig.geometry.ring", serializeRing, deserializeRing);
-	addSerializer<ecs::CMesh>(registry, "Mesh", "rig.geometry.mesh", serializeMesh, deserializeMesh);
-	addSerializer<ecs::CPath>(registry, "Path", "rig.geometry.path", serializePath, deserializePath);
+	addSerializer<ecs::CRing>(registry, "Ring", "rig.geometry.ring", serializeRing,
+							  deserializeRing);
+	addSerializer<ecs::CMesh>(registry, "Mesh", "rig.geometry.mesh", serializeMesh,
+							  deserializeMesh);
+	addSerializer<ecs::CPath>(registry, "Path", "rig.geometry.path", serializePath,
+							  deserializePath);
 
 	addSerializer<ecs::CLayer>(registry, "Layer", "rig.spatial.layer", serializeLayer,
 							   deserializeLayer);
@@ -1708,14 +1735,16 @@ void registerInto(project::ComponentSerializerRegistry& registry) {
 	addSerializer<ecs::CText>(
 		registry, "Text", "rig.media.text", serializeText, deserializeText,
 		[](entt::registry& reg, const EntityIdMap& idMap) { remapTextFont(reg, idMap); });
-	addSerializer<ecs::CCurve>(registry, "Curve", "rig.anim.curve", serializeCurve, deserializeCurve);
+	addSerializer<ecs::CCurve>(registry, "Curve", "rig.anim.curve", serializeCurve,
+							   deserializeCurve);
 
 	addSerializer<ecs::CPalette>(registry, "Palette", "rig.pixel.palette", serializePalette,
 								 deserializePalette);
 	addSerializer<ecs::CPalette>(registry, "PaletteShade", "x.rigkit.palette_shade",
 								 serializePaletteShade, deserializePaletteShade);
 	// No Contract schema covers these yet, so they travel as host extensions.
-	addSerializer<ecs::CGuide>(registry, "Guide", "x.rigkit.guide", serializeGuide, deserializeGuide);
+	addSerializer<ecs::CGuide>(registry, "Guide", "x.rigkit.guide", serializeGuide,
+							   deserializeGuide);
 	addSerializer<ecs::CIndexedAtlas>(registry, "IndexedAtlas", "x.rigkit.indexed_atlas",
 									  serializeIndexedAtlas, deserializeIndexedAtlas);
 	addSerializer<ecs::CFaceSelection>(registry, "FaceSelection", "x.rigkit.face_selection",

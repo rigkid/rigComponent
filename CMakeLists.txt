@@ -10,6 +10,8 @@ add_library(${PACK_NAME} STATIC
 	src/PrimitiveVertices.cpp
 	src/PrimitiveVertices3D.cpp
 	src/rig/create.cpp
+	src/PathEllipticArc.cpp
+	src/PathEllipticArc.h
 )
 target_link_libraries(${PACK_NAME} PUBLIC rigkit)
 target_include_directories(${PACK_NAME} PUBLIC

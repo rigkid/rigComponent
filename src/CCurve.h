@@ -2,9 +2,9 @@
 
 #include "ecs/PropertyReflection.h"
 
+#include <glm/glm.hpp>
 #include <algorithm>
 #include <cmath>
-#include <glm/glm.hpp>
 #include <string>
 #include <vector>
 
@@ -33,15 +33,16 @@ struct CCurve {
 	Interp interp = Interp::Smooth;
 	Preset preset = Preset::Linear;
 
-	static constexpr const char* kPresetNames[] = {"linear",   "easeIn", "easeOut", "easeInOut",
-												   "sCurve",   "bulge",  "squeeze", "custom"};
+	static constexpr const char* kPresetNames[] = {"linear",  "ease-in", "ease-out", "ease-in-out",
+												   "s-curve", "bulge",	 "squeeze",	 "custom"};
 	static constexpr int kPresetCount = 8;
 	static constexpr const char* kInterpNames[] = {"linear", "smooth"};
 	static constexpr int kInterpCount = 2;
 
 	std::vector<sProp> GetProperties() {
-		return {{0, "Preset", EPT_ENUM, reinterpret_cast<int*>(&preset), kPresetNames, kPresetCount},
-				{1, "Interp", EPT_ENUM, reinterpret_cast<int*>(&interp), kInterpNames, kInterpCount}};
+		return {
+			{0, "Preset", EPT_ENUM, reinterpret_cast<int*>(&preset), kPresetNames, kPresetCount},
+			{1, "Interp", EPT_ENUM, reinterpret_cast<int*>(&interp), kInterpNames, kInterpCount}};
 	}
 };
 

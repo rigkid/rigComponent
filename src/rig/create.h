@@ -10,6 +10,7 @@
 #include "CArc.h"
 #include "CCadBoolean.h"
 #include "CCadBox.h"
+#include "CCadDimension.h"
 #include "CCadCylinder.h"
 #include "CCadSphere.h"
 #include "CCamera.h"
@@ -321,6 +322,18 @@ entt::entity makeCadBoolean(rigkit::MEcs& ecs, rigkit::ecs::CCadBoolean::Op op,
 							std::vector<std::string> operands,
 							const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
 							const std::string& name = {});
+
+/**
+ * @brief CAD datum (`CCadDimension`). `a` / `b` are entity names.
+ * @details `measurement` true = label only. Pose for the label is optional.
+ */
+entt::entity makeCadDimension(rigkit::ecs::CCadDimension::Kind kind, const std::string& a,
+							  const std::string& b, float value, bool measurement = false,
+							  const std::string& name = {});
+
+entt::entity makeCadDimension(rigkit::MEcs& ecs, rigkit::ecs::CCadDimension::Kind kind,
+							  const std::string& a, const std::string& b, float value,
+							  bool measurement = false, const std::string& name = {});
 
 /**
  * @brief Light entity (`CTransform` + `CLight`).

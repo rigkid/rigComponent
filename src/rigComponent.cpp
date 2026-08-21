@@ -8,6 +8,7 @@
 #include "CCadBox.h"
 #include "CCadChamfer.h"
 #include "CCadCylinder.h"
+#include "CCadDimension.h"
 #include "CCadExtrude.h"
 #include "CCadFillet.h"
 #include "CCadRevolve.h"
@@ -114,6 +115,7 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CCadBoolean>("CadBoolean", true);
 	ecs->registerComponent<ecs::CCadFillet>("CadFillet", true);
 	ecs->registerComponent<ecs::CCadChamfer>("CadChamfer", true);
+	ecs->registerComponent<ecs::CCadDimension>("CadDimension", true);
 	ecs->registerComponent<ecs::CRing>("Ring", true);
 	ecs->registerComponent<ecs::CPath>("Path", true);
 	ecs->registerComponent<ecs::CPath3d>("Path3d", true);

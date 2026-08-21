@@ -22,7 +22,8 @@ struct CAssetRef {
 		Video = 2,
 		Model = 3,
 		Font = 4,
-		Other = 5
+		Document = 5,
+		Other = 6
 	};
 
 	Kind kind = Kind::Other;
@@ -30,9 +31,9 @@ struct CAssetRef {
 	bool loop = false;
 
 	std::vector<sProp> GetProperties() {
-		static const char* const kKindNames[] = {"image", "audio", "video",
-												 "model", "font",	"other"};
-		return {{0, "Kind", EPT_ENUM, reinterpret_cast<int*>(&kind), kKindNames, 6},
+		static const char* const kKindNames[] = {"image", "audio", "video", "model",
+												 "font", "document", "other"};
+		return {{0, "Kind", EPT_ENUM, reinterpret_cast<int*>(&kind), kKindNames, 7},
 				{1, "Path", EPT_STRING, &path},
 				{2, "Loop", EPT_BOOL, &loop}};
 	}

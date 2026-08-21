@@ -263,6 +263,21 @@ entt::entity makeCadBoolean(rigkit::MEcs& ecs, rigkit::ecs::CCadBoolean::Op op,
 	return e;
 }
 
+entt::entity makeCadDimension(rigkit::MEcs& ecs, rigkit::ecs::CCadDimension::Kind kind,
+							  const std::string& a, const std::string& b, float value,
+							  bool measurement, const std::string& name) {
+	auto e = ecs.createEntity(name);
+	ecs.addComponent(e, rigkit::ecs::CTransform{});
+	rigkit::ecs::CCadDimension dim;
+	dim.kind = kind;
+	dim.a = a;
+	dim.b = b;
+	dim.value = value;
+	dim.measurement = measurement;
+	ecs.addComponent(e, dim);
+	return e;
+}
+
 entt::entity makeMeshGrid(rigkit::MEcs& ecs, int half, float y, const rigkit::ecs::CDrawStyle& style,
 						  const std::string& name) {
 	if (half < 1) {
@@ -458,6 +473,13 @@ entt::entity makeCadBoolean(rigkit::ecs::CCadBoolean::Op op, std::vector<std::st
 							const rigkit::ecs::CDrawStyle& style, const std::string& name) {
 	auto* ecs = boundEcs();
 	return ecs ? makeCadBoolean(*ecs, op, std::move(operands), style, name) : entt::null;
+}
+
+entt::entity makeCadDimension(rigkit::ecs::CCadDimension::Kind kind, const std::string& a,
+							  const std::string& b, float value, bool measurement,
+							  const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeCadDimension(*ecs, kind, a, b, value, measurement, name) : entt::null;
 }
 
 entt::entity makeMeshGrid(int half, float y, const rigkit::ecs::CDrawStyle& style,

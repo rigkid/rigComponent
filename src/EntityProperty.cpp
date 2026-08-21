@@ -152,7 +152,7 @@ bool writeEntityVec2Property(MEcs& ecs, entt::entity entity, std::string_view pr
 			if (!namesMatch(p.name, resolved) && !namesMatch(p.name, propertyKey)) {
 				continue;
 			}
-			if (p.type == EPT_VEC2 || p.type == EPT_IMVEC2) {
+			if (p.type == EPT_VEC2) {
 				auto* v = static_cast<float*>(p.data);
 				v[0] = value.x;
 				v[1] = value.y;

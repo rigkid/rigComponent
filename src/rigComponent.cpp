@@ -36,6 +36,7 @@
 #include "COrbitDrive.h"
 #include "CPalette.h"
 #include "CPath.h"
+#include "CPath3d.h"
 #include "CPolygon.h"
 #include "CRectangle.h"
 #include "CRegularPolygon.h"
@@ -115,6 +116,7 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CCadChamfer>("CadChamfer", true);
 	ecs->registerComponent<ecs::CRing>("Ring", true);
 	ecs->registerComponent<ecs::CPath>("Path", true);
+	ecs->registerComponent<ecs::CPath3d>("Path3d", true);
 	ecs->registerComponent<ecs::CCurve>("Curve", true);
 	ecs->registerComponent<ecs::CMesh>("Mesh", true);
 	ecs->registerComponent<ecs::CSphere>("Sphere", true);

@@ -10,7 +10,7 @@ namespace ecs {
 
 /**
  * @brief Round selected mesh edges. Speaks `rig.cad.fillet`.
- * @details Compose on the solid entity. `allEdges` ignores `edges`. Authored intent —
+ * @details Compose on the solid entity. `allEdges` ignores `edges`. Authored intent  - 
  * a mesh CSG kernel may approximate.
  */
 struct CCadFillet {

@@ -2,7 +2,7 @@
 
 ![preview](img/preview.png)
 
-Example for **rigComponent** — POD `makeRect` / `makeCircle` / `makeEllipse` / `makeLine` / `makeMesh*` + selection. Present needs `rigSystems` (data pack stays systems-free).
+Example for **rigComponent** - POD `makeRect` / `makeCircle` / `makeEllipse` / `makeLine` / `makeMesh*` + selection. Present needs `rigSystems` (data pack stays systems-free).
 
 ```bash
 cmake -S . -B build

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * @brief Creators an artist calls to make entities — `makeRect` and friends.
+ * @brief Creators an artist calls to make entities - `makeRect` and friends.
  * @details NO CODE JUST DATA: creators write POD components only. Present via
  * rigSystems (2D) or rigRender3D (active camera).
  *
@@ -242,7 +242,7 @@ entt::entity makeMeshGrid(rigkit::MEcs& ecs, int half = 6, float y = 0.f,
 
 /**
  * @brief Icosphere entity (`CSphere`), radius / subdivisions stay live data.
- * @details Present rebuilds triangles from `CSphere` each frame — same parametric
+ * @details Present rebuilds triangles from `CSphere` each frame - same parametric
  * deal as `makeRegularPolygon` / `makeStar`, just in 3D. Want per-face colors or a
  * one-off hand-authored form instead? Build a `CMesh` directly (see `makeMesh`).
  */
@@ -291,7 +291,7 @@ entt::entity makeOrbitCamera(rigkit::MEcs& ecs, glm::vec3 target = {0.f, 0.f, 0.
 							 const std::string& name = {});
 
 /**
- * @brief CAD box solid (`CCadBox`). No draw style — bake or add `CDrawStyle`.
+ * @brief CAD box solid (`CCadBox`). No draw style - bake or add `CDrawStyle`.
  */
 entt::entity makeCadBox(float sizeX, float sizeY, float sizeZ, bool center = true,
 						const std::string& name = {});
@@ -338,7 +338,7 @@ entt::entity makeCadDimension(rigkit::MEcs& ecs, rigkit::ecs::CCadDimension::Kin
 
 /**
  * @brief Unbounded reference line (`CCadReferenceLine`) through `origin` along `direction`.
- * @details A datum, not a solid — leave it out of `makeCadBoolean` operands.
+ * @details A datum, not a solid - leave it out of `makeCadBoolean` operands.
  * `direction` need not be unit length.
  */
 entt::entity makeCadReferenceLine(glm::vec3 origin, glm::vec3 direction,

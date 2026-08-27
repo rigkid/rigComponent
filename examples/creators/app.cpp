@@ -27,7 +27,7 @@ void setSlot(rigkit::ecs::CPalette& palette, int slot, glm::vec4 rgba) {
 	palette.colors[static_cast<size_t>(slot)] = rgba;
 }
 
-/// Flat poster palette — no shade ramps,
+/// Flat poster palette - no shade ramps,
 /// so every slot keeps the CPalette default stop.
 rigkit::ecs::CPalette posterPalette() {
 	rigkit::ecs::CPalette p;
@@ -83,7 +83,7 @@ void CreatorsApp::setup() {
 	// Rectangles take a top-left corner, circles and ellipses take a centre,
 	// and creation order is paint order.
 
-	// Selection is data too — the present path strokes a bounds overlay.
+	// Selection is data too - the present path strokes a bounds overlay.
 	auto rect = rig::makeRect(40.f, 40.f, 220.f, 170.f, solid(ink(kBlue)), "demo-rect");
 	rig::select(rect);
 

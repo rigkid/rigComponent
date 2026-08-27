@@ -24,7 +24,7 @@ enum class ScreenCastProtocol : int {
 
 /**
  * @brief Pixel source for a cast session.
- * @details Host window framebuffer only — never desktop / monitor capture.
+ * @details Host window framebuffer only - never desktop / monitor capture.
  */
 enum class ScreenCastSource : int { HostWindow = 0 };
 
@@ -34,7 +34,7 @@ enum class ScreenCastPayload : int {
 	ImageFile = 1
 };
 
-/** @brief Session lifecycle — written by fulfillment, readable in Properties. */
+/** @brief Session lifecycle - written by fulfillment, readable in Properties. */
 enum class ScreenCastState : int {
 	Idle = 0,
 	Discovering = 1,
@@ -45,7 +45,7 @@ enum class ScreenCastState : int {
 };
 
 /**
- * @brief Screen-cast session intent + selected target — data only.
+ * @brief Screen-cast session intent + selected target - data only.
  * @details Protocol-neutral (AirPlay, Google Cast, RigKit peer). Capture and
  * sockets live in **rigScreenCast**. `source` is always HostWindow. For
  * `ImageFile`, set `imagePath` or compose `CAssetRef` (Kind::Image) on the

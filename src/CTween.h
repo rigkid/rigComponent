@@ -8,7 +8,7 @@ namespace rigkit {
 namespace ecs {
 
 /**
- * @brief Drive one float property over time — speaks `rig.anim.tween`.
+ * @brief Drive one float property over time - speaks `rig.anim.tween`.
  * @details Advanced by `STweens` each Update via `writeEntityProperty`.
  */
 struct CTween {

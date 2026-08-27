@@ -13,7 +13,7 @@ namespace rigkit {
 namespace ecs {
 
 /**
- * @brief One OpenType axis value — nested type of `rig.media.text`.
+ * @brief One OpenType axis value - nested type of `rig.media.text`.
  * @details `tag` is a 4-char OpenType tag packed as big-endian uint32
  * (e.g. 'wght' = 0x77676874). Min/max/name come from the font file at
  * fulfillment time; only the authored value is stored here.
@@ -24,10 +24,10 @@ struct FontAxisValue {
 };
 
 /**
- * @brief Scene / canvas text run — data only. Speaks `rig.media.text`.
+ * @brief Scene / canvas text run - data only. Speaks `rig.media.text`.
  * @details Portable: `text`, `font` (`rig.media.asset_ref`, kind font),
  * `fontSize`, `rgba`, `axes`, `features`, `useKerning`. Never store Face*,
- * glyph caches, or GPU handles here — those live in the font fulfillment
+ * glyph caches, or GPU handles here - those live in the font fulfillment
  * pack (rigVarFont). Plot bake-to-path text stays on `CTexts`
  * (rigPlotComponent).
  */
@@ -38,7 +38,7 @@ struct CText {
 	float fontSize = 24.f;
 	glm::vec4 rgba{1.f, 1.f, 1.f, 1.f};
 	std::vector<FontAxisValue> axes;
-	std::string features; ///< e.g. "liga,ss01" — optional OT features string.
+	std::string features; ///< e.g. "liga,ss01" - optional OT features string.
 	bool useKerning = true;
 
 	std::vector<sProp> GetProperties() {

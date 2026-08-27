@@ -16,7 +16,7 @@ namespace path {
 /**
  * @brief SVG F.6 elliptical arc kept as CPath::ArcTo.
  * @details Flatten / fill / CNC tessellate through these helpers. Portable
- * `.rig` path schema has no arc command — expand with @ref appendCubics.
+ * `.rig` path schema has no arc command - expand with @ref appendCubics.
  */
 
 struct EllipticArc {

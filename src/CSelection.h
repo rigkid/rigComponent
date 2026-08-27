@@ -4,7 +4,7 @@ namespace rigkit {
 namespace ecs {
 
 /**
- * @brief Runtime selection flags — written by pick / multi-select, not the property grid.
+ * @brief Runtime selection flags - written by pick / multi-select, not the property grid.
  */
 struct CSelection {
 	static constexpr bool kNoProperties = true;

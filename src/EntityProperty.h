@@ -18,7 +18,7 @@ namespace ecs {
 /**
  * @brief Write a reflected float/int/bool property on an entity by name.
  * @details Resolves `propertyKey` against `GetProperties` / registered props.
- * Accepts dotted contract keys (`position.y` → `Position Y`) and exact prop names.
+ * Accepts dotted contract keys (`position.y` to `Position Y`) and exact prop names.
  * @return True when a matching writable property was found.
  */
 bool writeEntityProperty(MEcs& ecs, entt::entity entity, std::string_view propertyKey, float value);

@@ -10,7 +10,7 @@ namespace ecs {
 /**
  * @brief Canvas surface POD (size, clear color, grid, clock).
  * @details Clock fields (`time` / `frameCount`) are advanced by SCanvasUpdate.
- * Not serialized by rigProject yet (no codec) — stays non-portable until that lands.
+ * Not serialized by rigProject yet (no codec) - stays non-portable until that lands.
  */
 struct CCanvas {
 	int width = 1024;

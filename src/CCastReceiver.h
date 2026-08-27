@@ -10,7 +10,7 @@ namespace rigkit {
 namespace ecs {
 
 /**
- * @brief One discovered cast receiver — data only.
+ * @brief One discovered cast receiver - data only.
  * @details Fulfillment (**rigScreenCast**) writes rows from mDNS; no sockets
  * here. Prefer one entity per receiver.
  */

@@ -64,7 +64,7 @@ struct CPalette {
 		p.shadeNext[0] = -1;
 		p.shadeNext[7] = 6;
 		p.shadeNext[6] = 5;
-		p.shadeNext[5] = -1; // stop on dark grey — avoid crushing to hard black
+		p.shadeNext[5] = -1; // stop on dark grey - avoid crushing to hard black
 		p.shadeNext[8] = 2;
 		p.shadeNext[2] = 5;
 		p.shadeNext[9] = 4;

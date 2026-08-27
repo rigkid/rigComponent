@@ -10,9 +10,9 @@ namespace rigkit {
 namespace ecs {
 
 /**
- * @brief Inbound cast session — data only (UxPlay-style receive direction).
+ * @brief Inbound cast session - data only (UxPlay-style receive direction).
  * @details Fulfillment in **rigScreenCast** presents decoded frames into the
- * host window / GL path — never desktop capture. Advertise only protocols the
+ * host window / GL path - never desktop capture. Advertise only protocols the
  * build can actually receive (RigKit peer; AirPlay when UxPlay is linked).
  */
 struct CScreenCastReceive {

@@ -7,7 +7,7 @@ namespace rigkit {
 namespace ecs {
 
 /**
- * @brief Tempo and playhead authority — speaks `rig.music.transport`.
+ * @brief Tempo and playhead authority - speaks `rig.music.transport`.
  * @details One per scene when music schemas are present. Advance in Update;
  * clock / pattern / sequencer do not own bpm or the global playhead.
  */

@@ -10,7 +10,7 @@ namespace ecs {
 /**
  * @brief Local TRS (+ euler editor cache) and cached world matrix.
  * @details Speaks `rig.spatial.transform` (`position` / `rotation` / `scale`).
- * `rotation` (quat) is authoritative for `localMatrix` and serialization — avoids
+ * `rotation` (quat) is authoritative for `localMatrix` and serialization - avoids
  * gimbal lock. `euler` is an editor-facing cache (radians); do not serialize it.
  * Use `setEulerRadians` / `setRotationQuat` (or the sync helpers) so both stay aligned.
  * `SHierarchy` fills `world` each Update from `CRelationship::parent` (if any).
@@ -22,7 +22,7 @@ struct CTransform {
 	/// Editor-facing Euler (radians); not portable / not serialized. Keep in sync with `rotation`.
 	glm::vec3 euler{0.0f, 0.0f, 0.0f};
 
-	/// Filled by SHierarchy — parent chain * local TRS.
+	/// Filled by SHierarchy - parent chain * local TRS.
 	glm::mat4 world{1.0f};
 
 	void syncRotationFromEuler() { rotation = glm::normalize(glm::quat(euler)); }

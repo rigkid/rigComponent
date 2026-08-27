@@ -8,7 +8,7 @@ namespace rigkit {
 namespace ecs {
 
 /**
- * @brief Low-frequency oscillator — speaks `rig.mod.lfo`.
+ * @brief Low-frequency oscillator - speaks `rig.mod.lfo`.
  * @details `lastSample` is a runtime cache (not serialized). Drive targets through
  * `CModBinding` + `SModulators` (Update), not a free-function tick.
  */
@@ -17,7 +17,7 @@ struct CModLfo {
 	float frequency = 1.f;		   ///< Hz
 	float amplitude = 1.f;
 	float offset = 0.f;
-	float phase = 0.f; ///< 0–1 wrap
+	float phase = 0.f; ///< 0-1 wrap
 	float lastSample = 0.f;
 
 	std::vector<sProp> GetProperties() {

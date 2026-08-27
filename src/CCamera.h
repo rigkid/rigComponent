@@ -12,7 +12,7 @@ namespace rigkit {
 namespace ecs {
 
 /**
- * @brief Portable camera POD — optics plus present chrome.
+ * @brief Portable camera POD - optics plus present chrome.
  * @details Pose lives on `CTransform` (same entity). Speaks `rig.spatial.camera`.
  * `rigRender3D` builds view from `CTransform::world` and projection from these fields.
  * `presentWidth` / `presentHeight` / `showFps` / `shade` are present choices, not optics.

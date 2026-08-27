@@ -3,7 +3,7 @@
 /**
  * @file
  * @brief Axis-aligned bounds for whichever 2D primitive an entity carries.
- * @details Local space only — apply the entity's `CTransform` yourself for world bounds.
+ * @details Local space only - apply the entity's `CTransform` yourself for world bounds.
  */
 
 #include <entt/entt.hpp>

@@ -9,7 +9,7 @@ namespace ecs {
 
 /**
  * @brief Editable vector stroke as plain commands. Speaks `rig.geometry.path`.
- * @details Portable POD — no toolkit/GPU types. Nested `Command` matches the
+ * @details Portable POD - no toolkit/GPU types. Nested `Command` matches the
  * schema command object (`type` / `point` / `control1` / `control2`). ArcTo is
  * a host command for SVG A; `.rig` path serialize expands it to cubics. Plot
  * layer bags stay on `CPaths` (rigPlotComponent); flatten / G-code emit live in
@@ -20,7 +20,7 @@ struct CPath {
 
 	enum class Cmd : uint8_t { MoveTo, LineTo, CubicTo, QuadTo, Close, ArcTo };
 
-	/** @brief One path command — nested type of `rig.geometry.path`. */
+	/** @brief One path command - nested type of `rig.geometry.path`. */
 	struct Command {
 		Cmd type = Cmd::MoveTo;
 		glm::vec2 p{0.f, 0.f};	   ///< MoveTo / LineTo / cubic/quad/arc endpoint; Close unused

@@ -30,7 +30,7 @@ struct CArc {
 		ry = r;
 	}
 
-	/** @brief Larger axis — used for tessellation segment heuristics. */
+	/** @brief Larger axis - used for tessellation segment heuristics. */
 	float majorRadius() const { return std::max(std::abs(rx), std::abs(ry)); }
 
 	bool isCircular(float eps = 1e-4f) const { return std::abs(rx - ry) <= eps; }

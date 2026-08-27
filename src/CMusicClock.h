@@ -7,7 +7,7 @@ namespace rigkit {
 namespace ecs {
 
 /**
- * @brief Tick derivation from transport or external sync — speaks `rig.music.clock`.
+ * @brief Tick derivation from transport or external sync - speaks `rig.music.clock`.
  * @details Does not own bpm; read `CMusicTransport`. External writers (Link, etc.)
  * set `externalSync` and fill `syncBeat` / `syncPhase` each Update.
  */

@@ -10,7 +10,7 @@ namespace ecs {
 
 /**
  * @brief Bevel selected mesh edges. Speaks `rig.cad.chamfer`.
- * @details Compose on the solid entity. `allEdges` ignores `edges`. Authored intent —
+ * @details Compose on the solid entity. `allEdges` ignores `edges`. Authored intent  - 
  * a mesh CSG kernel may approximate.
  */
 struct CCadChamfer {

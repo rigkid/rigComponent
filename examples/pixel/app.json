@@ -2,7 +2,7 @@
   "name": "pixel",
   "version": "0.1.0",
   "license": "MIT",
-  "description": "Sprite-sheet pixel editor — indexed canvas, layers, brushes, PNG/BMP, playback.",
+  "description": "Sprite-sheet pixel editor - indexed canvas, layers, brushes, PNG/BMP, playback.",
   "window": { "width": 1200, "height": 760, "title": "pixel" },
   "dependencies": [
     {

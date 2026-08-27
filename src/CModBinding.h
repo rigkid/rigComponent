@@ -8,7 +8,7 @@ namespace rigkit {
 namespace ecs {
 
 /**
- * @brief Modulator → property wire — speaks `rig.mod.binding`.
+ * @brief Modulator to property wire - speaks `rig.mod.binding`.
  * @details `source` / `target` are entity names (same as `createEntity` / `findEntity`).
  * `propertyKey` matches `GetProperties` names (and dotted aliases like `position.y`).
  * Advanced by `SModulators` each Update.

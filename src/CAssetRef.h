@@ -9,9 +9,9 @@ namespace rigkit {
 namespace ecs {
 
 /**
- * @brief File identity — data only. Speaks `rig.media.asset_ref`.
+ * @brief File identity - data only. Speaks `rig.media.asset_ref`.
  * @details One schema for paths. Other components hold an entity id that
- * points here (`CText::font`, …) or compose this type on the same entity
+ * points here (`CText::font`, ...) or compose this type on the same entity
  * (`CCode` + disk origin). Decode / GPU / players stay in fulfillment packs.
  * `loop` is meaningful for playback kinds; ignore it for stills and fonts.
  */

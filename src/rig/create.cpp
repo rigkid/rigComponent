@@ -397,7 +397,7 @@ void select(rigkit::MEcs& ecs, entt::entity entity, bool selected) {
 	ecs.addComponent<rigkit::ecs::CSelection>(entity, sel);
 }
 
-// Bare forms — same creators against the ECS bound by setEcs.
+// Bare forms - same creators against the ECS bound by setEcs.
 
 entt::entity makeRect(float x, float y, float w, float h, const rigkit::ecs::CDrawStyle& style,
 					  const std::string& name) {

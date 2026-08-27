@@ -29,7 +29,7 @@ struct CIndexedAtlas {
 		if (indices.empty() || width <= 0 || height <= 0) {
 			return 0;
 		}
-		// Wrap; v often stored OpenGL-style (0 at bottom) — present may flip.
+		// Wrap; v often stored OpenGL-style (0 at bottom) - present may flip.
 		float wu = u - std::floor(u);
 		float wv = v - std::floor(v);
 		if (wu < 0.f) {

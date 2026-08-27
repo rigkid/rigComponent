@@ -14,7 +14,7 @@ namespace ecs {
 /**
  * @brief Undirected mesh edge as a vertex pair into `CMesh::positions`.
  * @details Store `min(a,b)`, `max(a,b)`. Speaks the `{a,b}` objects on
- * `rig.cad.fillet` / `rig.cad.chamfer`. Derived from consecutive `loops` pairs —
+ * `rig.cad.fillet` / `rig.cad.chamfer`. Derived from consecutive `loops` pairs  - 
  * not a parallel edge table on the mesh.
  */
 struct MeshEdge {

@@ -12,7 +12,7 @@ namespace ecs {
  * @brief Mesh as plain data: shared verts + optional n-gon faces.
  * @details Speaks `rig.geometry.mesh`. `loops` / `loopSizes` are the authored
  * faces (a cube is 6 quads, not 12 triangles). Edges are consecutive pairs in
- * each loop (plus close) — not a second table. Empty loops = legacy triangles
+ * each loop (plus close) - not a second table. Empty loops = legacy triangles
  * from `indices`. Present tessellates loops to `indices`. Optional `faceColors`
  * / `facePalette` are one entry per authored face. Empty means use `CDrawStyle`
  * fill. Optional `texcoords`: one UV per vertex when set.
@@ -29,7 +29,7 @@ struct CMesh {
 	std::vector<uint32_t> loopSizes;
 	/// One color per authored face. Ignored for line modes.
 	std::vector<glm::vec4> faceColors;
-	/// Palette index per authored face (into `CPalette`). Empty ⇒ use faceColors / style.
+	/// Palette index per authored face (into `CPalette`). Empty  =>  use faceColors / style.
 	std::vector<uint8_t> facePalette;
 	/// Per-vertex UVs; empty or size == positions.size().
 	std::vector<glm::vec2> texcoords;

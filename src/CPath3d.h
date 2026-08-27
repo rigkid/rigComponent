@@ -9,7 +9,7 @@ namespace ecs {
 
 /**
  * @brief Editable 3-space stroke as plain commands. Speaks `rig.geometry.path3d`.
- * @details Sibling of `CPath` — same command grammar, `vec3` points. No `ArcTo`:
+ * @details Sibling of `CPath` - same command grammar, `vec3` points. No `ArcTo`:
  * circular arcs stay on `rig.geometry.arc`; snippet G2/G3 already chord to
  * lines. Planar contours stay on `CPath`; do not fake 2D with z = 0 here.
  * Command list is edited by path tools, not the generic property grid.
@@ -19,7 +19,7 @@ struct CPath3d {
 
 	enum class Cmd : uint8_t { MoveTo, LineTo, CubicTo, QuadTo, Close };
 
-	/** @brief One path command — nested type of `rig.geometry.path3d`. */
+	/** @brief One path command - nested type of `rig.geometry.path3d`. */
 	struct Command {
 		Cmd type = Cmd::MoveTo;
 		glm::vec3 p{0.f};  ///< MoveTo / LineTo / cubic/quad endpoint; Close unused

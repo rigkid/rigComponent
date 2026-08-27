@@ -10,7 +10,7 @@ namespace ecs {
 
 /**
  * @brief Unbounded straight datum to build against. Speaks `rig.cad.reference_line`.
- * @details Not a solid and never a CSG operand. The line has no ends —
+ * @details Not a solid and never a CSG operand. The line has no ends  - 
  * `origin` / `direction` say where it lies, and a host draws whatever span suits
  * the view. Naming two parts in `a` / `b` places the line through them instead,
  * so it follows the parts when the model rebuilds; `origin` / `direction` are

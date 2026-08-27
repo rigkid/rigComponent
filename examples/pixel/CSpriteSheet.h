@@ -5,7 +5,7 @@
 #include "ecs/PropertyReflection.h"
 
 /**
- * @brief Sprite-sheet layout for the pixel example — app-local, not a pack POD.
+ * @brief Sprite-sheet layout for the pixel example - app-local, not a pack POD.
  * @details Tile grid over `CIndexedAtlas` pixels. Travels as `x.rigkit.sprite_sheet`
  * when the example registers a codec. Promote to `rig.pixel.tile_set` only if a
  * second host needs the same fields.

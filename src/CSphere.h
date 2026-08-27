@@ -8,7 +8,7 @@ namespace ecs {
 
 /**
  * @brief Icosphere-tessellated sphere. Speaks `rig.geometry.sphere`.
- * @details Stays parametric like the 2D primitives (`CRegularPolygon`, `CStar`, …):
+ * @details Stays parametric like the 2D primitives (`CRegularPolygon`, `CStar`, ...):
  * radius and subdivisions remain editable, and present rebuilds triangles fresh
  * each frame (`verticesOf(const CSphere&)` in `PrimitiveVertices3D.h`) rather than
  * baking a one-shot `CMesh`. Reach for `CMesh` directly instead when a shape needs

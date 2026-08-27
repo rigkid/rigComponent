@@ -11,7 +11,7 @@ namespace ecs {
 /**
  * @brief Unbounded flat datum to build against. Speaks `rig.cad.reference_plane`.
  * @details Not a solid, never a CSG operand, and it does not cut anything. The
- * plane has no edges — a host draws whatever patch suits the view. Naming a part
+ * plane has no edges - a host draws whatever patch suits the view. Naming a part
  * in `a` moves the plane onto it so the datum follows it when the model
  * rebuilds, and `origin` is ignored; `normal` stays authored either way, since
  * one part fixes a point but not an orientation. A missing named part, or a

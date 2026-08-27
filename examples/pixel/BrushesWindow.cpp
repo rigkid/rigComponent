@@ -94,7 +94,7 @@ void BrushesWindow::renderContents() {
 			ImGui::PopStyleColor();
 		}
 		if (ImGui::IsItemHovered()) {
-			ImGui::SetTooltip(i == 0 ? "Index 0 — transparent" : "Index %d", i);
+			ImGui::SetTooltip(i == 0 ? "Index 0 - transparent" : "Index %d", i);
 		}
 		ImGui::PopID();
 	}

@@ -10,7 +10,7 @@ namespace rigkit {
 namespace ecs {
 
 /**
- * @brief Portable light POD — color/intensity + shade style.
+ * @brief Portable light POD - color/intensity + shade style.
  * @details Pose lives on `CTransform` (same entity). Speaks `rig.render.light`
  * (directional / point). Directional lights shine along local -Z (world).
  * Point lights use world translation. No GPU handles.

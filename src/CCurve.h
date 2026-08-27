@@ -17,7 +17,7 @@ namespace rigkit {
 namespace ecs {
 
 /**
- * @brief 1D transfer curve — speaks `rig.anim.curve`.
+ * @brief 1D transfer curve - speaks `rig.anim.curve`.
  * @details Remaps normalized t in [0,1] to [0,1]. Named presets regenerate
  * `points`; editing points sets `preset` to Custom. Runtime LUTs stay host-side.
  */

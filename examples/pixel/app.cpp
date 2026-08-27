@@ -23,7 +23,7 @@
 #include <spdlog/spdlog.h>
 
 void PixelApp::setup() {
-	spdlog::info("pixel — sprite-sheet editor");
+	spdlog::info("pixel - sprite-sheet editor");
 	m_engine->setClearColor(0.10f, 0.10f, 0.12f, 1.0f);
 
 	auto* packs = m_engine->getPackManager();
@@ -66,7 +66,7 @@ void PixelApp::setupUi() {
 	mui->setImGuiTheme(rigkit::ImGuiTheme::Dark);
 	mui->uiPrefs().showStatusBar = true;
 	mui->setUndoStack(&m_undo);
-	mui->setAboutIntro("pixel — indexed sprite-sheet editor.\n"
+	mui->setAboutIntro("pixel - indexed sprite-sheet editor.\n"
 					   "Pencil / eraser / fill, layers, PNG/BMP export, frame playback.\n"
 					   "Index 0 is transparent. File New sets frame size and sheet columns/rows.");
 
@@ -404,7 +404,7 @@ void PixelApp::handleShortcuts() {
 }
 
 void PixelApp::update(float dt) {
-	// Load runs in ecs updateSystems after this — arm one frame, then ensure.
+	// Load runs in ecs updateSystems after this - arm one frame, then ensure.
 	if (m_ensureAfterLoad) {
 		if (m_ensureArmed) {
 			if (auto* ecs = m_engine->getECSManager()) {

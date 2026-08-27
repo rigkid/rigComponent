@@ -1,11 +1,12 @@
 #include "app.h"
 
-#include "core/RigKitEngine.h"
 #include "core/pack/MPack.h"
-
+#include "core/RigKitEngine.h"
 #include "packs/rigComponent/src/rig.h"
 #include "packs/rigComponent/src/rigComponent.h"
 #include "packs/rigSystems/src/rigSystems.h"
+
+#include <spdlog/spdlog.h>
 
 namespace {
 

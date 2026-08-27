@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 
-#include "CScreenCast.h"
 #include "ecs/PropertyReflection.h"
+#include "CScreenCast.h"
 
 namespace rigkit {
 namespace ecs {

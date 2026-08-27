@@ -1,4 +1,5 @@
 #include "PathEllipticArc.h"
+
 #include <algorithm>
 #include <cmath>
 

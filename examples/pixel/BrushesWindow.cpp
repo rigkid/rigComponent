@@ -1,12 +1,11 @@
 #include "BrushesWindow.h"
 
-#include <cstdio>
-
-#include <imgui.h>
-
 #include "core/RigKitEngine.h"
 #include "ecs/MEcs.h"
 #include "CPalette.h"
+
+#include <cstdio>
+#include <imgui.h>
 
 BrushesWindow::BrushesWindow() : IWindow("Brushes") {
 	setCategory("Edit");

@@ -1,17 +1,16 @@
 #include "CanvasWindow.h"
 
-#include <algorithm>
-#include <cmath>
-#include <vector>
-
-#include <imgui.h>
-
 #include "core/IMui.h"
 #include "core/RigKitEngine.h"
 #include "core/util/UndoStack.h"
 #include "ecs/MEcs.h"
 #include "CIndexedAtlas.h"
 #include "CSpriteSheet.h"
+
+#include <algorithm>
+#include <cmath>
+#include <imgui.h>
+#include <vector>
 
 namespace {
 ImVec2 toIm(const glm::vec2& v) {

@@ -1,10 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <entt/entt.hpp>
 #include <string>
 #include <vector>
-
-#include <entt/entt.hpp>
 
 #include "CIndexedAtlas.h"
 #include "CLayer.h"

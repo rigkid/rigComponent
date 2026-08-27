@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <vector>
-
 #include "ecs/PropertyReflection.h"
 
 namespace rigkit {

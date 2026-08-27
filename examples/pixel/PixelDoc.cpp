@@ -1,23 +1,23 @@
 #include "PixelDoc.h"
 
+#include "ecs/MEcs.h"
+#include "packs/rigComponent/src/rig.h"
+#include "packs/rigImGui/src/EntityPick.h"
+#include "packs/rigProject/src/rigProject.h"
+#include "AddSerializer.h"
+#include "CIndexedAtlas.h"
+#include "CLayer.h"
+#include "ComponentSerializerRegistry.h"
+#include "CPalette.h"
+#include "CProject.h"
+#include "CSelection.h"
+#include "ProjectJson.h"
+
 #include <algorithm>
 #include <cctype>
 #include <cmath>
 #include <queue>
 #include <utility>
-
-#include "ecs/MEcs.h"
-#include "packs/rigComponent/src/rig.h"
-#include "packs/rigImGui/src/EntityPick.h"
-#include "packs/rigProject/src/rigProject.h"
-#include "CIndexedAtlas.h"
-#include "CLayer.h"
-#include "CPalette.h"
-#include "CProject.h"
-#include "CSelection.h"
-#include "AddSerializer.h"
-#include "ComponentSerializerRegistry.h"
-#include "ProjectJson.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "third_party/glfw/deps/stb_image_write.h"

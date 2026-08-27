@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <vector>
-
 #include "ecs/PropertyReflection.h"
 
 /**

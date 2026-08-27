@@ -9,7 +9,6 @@
 
 #include <string>
 #include <vector>
-
 #include "ecs/PropertyReflection.h"
 
 namespace rigkit {

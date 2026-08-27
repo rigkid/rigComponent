@@ -1,14 +1,13 @@
 #include "PreviewWindow.h"
 
-#include <algorithm>
-#include <vector>
-
-#include <imgui.h>
-
 #include "core/RigKitEngine.h"
 #include "ecs/MEcs.h"
 #include "CSpriteSheet.h"
 #include "PixelDoc.h"
+
+#include <algorithm>
+#include <imgui.h>
+#include <vector>
 
 PreviewWindow::PreviewWindow() : IWindow("Preview") {
 	setCategory("Edit");

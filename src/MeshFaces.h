@@ -7,9 +7,8 @@
  * renderer draws. Call `meshFinishFaces` after create or import so the two stay in step.
  */
 
-#include "CMesh.h"
-
 #include <cstdint>
+#include "CMesh.h"
 
 namespace rigkit {
 namespace ecs {

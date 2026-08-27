@@ -9,7 +9,6 @@
 
 #include <glm/glm.hpp>
 #include <vector>
-
 #include "CSphere.h"
 
 namespace rigkit {

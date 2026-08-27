@@ -6,9 +6,10 @@
  * @details Local space only — apply the entity's `CTransform` yourself for world bounds.
  */
 
-#include <glm/glm.hpp>
 #include <entt/entt.hpp>
+#include <glm/glm.hpp>
 
+#include "ecs/MEcs.h"
 #include "CArc.h"
 #include "CEllipse.h"
 #include "CLine.h"
@@ -18,7 +19,7 @@
 #include "CRing.h"
 #include "CSpline.h"
 #include "CStar.h"
-#include "ecs/MEcs.h"
+#include "CText.h"
 
 namespace rigkit {
 namespace ecs {
@@ -48,6 +49,7 @@ Bounds2D boundsOf(const CStar& shape);
 Bounds2D boundsOf(const CArc& shape);
 Bounds2D boundsOf(const CSpline& shape);
 Bounds2D boundsOf(const CRing& shape);
+Bounds2D boundsOf(const CText& shape);
 
 /**
  * @brief Local bounds of whichever geometry primitive the entity carries.

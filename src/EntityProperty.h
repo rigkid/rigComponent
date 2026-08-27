@@ -7,11 +7,10 @@
  * `position.y` map onto the display names the components register.
  */
 
-#include "ecs/MEcs.h"
-
 #include <glm/glm.hpp>
 #include <optional>
 #include <string_view>
+#include "ecs/MEcs.h"
 
 namespace rigkit {
 namespace ecs {

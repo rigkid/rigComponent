@@ -1,27 +1,26 @@
 #include "app.h"
 
-#include <algorithm>
-#include <cstdio>
-#include <memory>
-
-#include <imgui.h>
-#include <imgui_internal.h>
-#include <spdlog/spdlog.h>
-
-#include "core/RigKitEngine.h"
 #include "core/pack/MPack.h"
+#include "core/RigKitEngine.h"
 #include "core/util/AppPaths.h"
 #include "rendering/U_gladGlfw.h"
-#include "CProject.h"
 #include "packs/rigComponent/src/rigComponent.h"
 #include "packs/rigImGui/src/ImGuiStyleKit.h"
-#include "packs/rigImGui/src/MWindow.h"
 #include "packs/rigImGui/src/Mui.h"
+#include "packs/rigImGui/src/MWindow.h"
 #include "packs/rigImGui/src/rigImGui.h"
 #include "packs/rigSystems/src/rigSystems.h"
 #include "BrushesWindow.h"
 #include "CanvasWindow.h"
+#include "CProject.h"
 #include "PreviewWindow.h"
+
+#include <algorithm>
+#include <cstdio>
+#include <imgui.h>
+#include <imgui_internal.h>
+#include <memory>
+#include <spdlog/spdlog.h>
 
 void PixelApp::setup() {
 	spdlog::info("pixel — sprite-sheet editor");

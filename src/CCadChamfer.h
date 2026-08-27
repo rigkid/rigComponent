@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "MeshEdge.h"
 #include "ecs/PropertyReflection.h"
+#include "MeshEdge.h"
 
 namespace rigkit {
 namespace ecs {

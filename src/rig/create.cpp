@@ -1,11 +1,13 @@
 #include "rig/create.h"
-#include <cmath>
-#include <spdlog/spdlog.h>
+
 #include "CGroup.h"
 #include "CRelationship.h"
 #include "CSelectable.h"
 #include "CSelection.h"
 #include "MeshFaces.h"
+
+#include <cmath>
+#include <spdlog/spdlog.h>
 
 namespace rig {
 namespace {

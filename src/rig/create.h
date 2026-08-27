@@ -17,13 +17,14 @@
  * target a specific registry.
  */
 
+#include <cstdint>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <cstdint>
 #include <string>
 #include <vector>
 
+#include "ecs/MEcs.h"
 #include "CArc.h"
 #include "CCadBoolean.h"
 #include "CCadBox.h"
@@ -49,7 +50,6 @@
 #include "CSphere.h"
 #include "CStar.h"
 #include "CTransform.h"
-#include "ecs/MEcs.h"
 
 namespace rig {
 

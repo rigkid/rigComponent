@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <cmath>
-
 #include "PrimitiveVertices.h"
 
 namespace rigkit {
@@ -84,6 +83,12 @@ Bounds2D boundsOf(const CRing& shape) {
 					   {shape.cx + shape.outerRadius, shape.cy + shape.outerRadius});
 }
 
+Bounds2D boundsOf(const CText& shape) {
+	const float h = (shape.fontSize > 0.f) ? shape.fontSize : 1.f;
+	const float w = std::max(h, static_cast<float>(shape.text.size()) * h * 0.5f);
+	return fromCorners({0.f, 0.f}, {w, h});
+}
+
 Bounds2D shapeBounds2D(MEcs& ecs, entt::entity entity) {
 	if (ecs.hasComponent<CRectangle>(entity)) {
 		return boundsOf(ecs.getComponent<CRectangle>(entity));
@@ -112,6 +117,9 @@ Bounds2D shapeBounds2D(MEcs& ecs, entt::entity entity) {
 	if (ecs.hasComponent<CRing>(entity)) {
 		return boundsOf(ecs.getComponent<CRing>(entity));
 	}
+	if (ecs.hasComponent<CText>(entity)) {
+		return boundsOf(ecs.getComponent<CText>(entity));
+	}
 	return {};
 }
 
@@ -120,7 +128,7 @@ bool hasShape2D(MEcs& ecs, entt::entity entity) {
 		   ecs.hasComponent<CLine>(entity) || ecs.hasComponent<CPolygon>(entity) ||
 		   ecs.hasComponent<CRegularPolygon>(entity) || ecs.hasComponent<CStar>(entity) ||
 		   ecs.hasComponent<CArc>(entity) || ecs.hasComponent<CSpline>(entity) ||
-		   ecs.hasComponent<CRing>(entity);
+		   ecs.hasComponent<CRing>(entity) || ecs.hasComponent<CText>(entity);
 }
 
 } // namespace ecs

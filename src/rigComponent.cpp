@@ -1,7 +1,9 @@
-#include <spdlog/spdlog.h>
-
 #include "rigComponent.h"
 
+#include "core/pack/PackRegistry.h"
+#include "core/RigKitEngine.h"
+#include "ecs/components/CGuide.h"
+#include "ecs/MEcs.h"
 #include "CArc.h"
 #include "CAssetRef.h"
 #include "CCadBoolean.h"
@@ -59,10 +61,7 @@
 #include "CVertexSelection.h"
 #include "rig/create.h"
 
-#include "core/RigKitEngine.h"
-#include "core/pack/PackRegistry.h"
-#include "ecs/MEcs.h"
-#include "ecs/components/CGuide.h"
+#include <spdlog/spdlog.h>
 
 namespace rigkit {
 

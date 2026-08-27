@@ -1,9 +1,8 @@
 #pragma once
 
-#include <glm/glm.hpp>
 #include <cstdint>
+#include <glm/glm.hpp>
 #include <vector>
-
 #include "ecs/PropertyReflection.h"
 
 namespace rigkit {

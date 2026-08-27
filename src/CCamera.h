@@ -1,12 +1,12 @@
 #pragma once
 
+#include <cmath>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <cmath>
 #include <vector>
 
-#include "CTransform.h"
 #include "ecs/PropertyReflection.h"
+#include "CTransform.h"
 
 namespace rigkit {
 namespace ecs {

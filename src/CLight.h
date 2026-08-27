@@ -3,8 +3,8 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-#include "CTransform.h"
 #include "ecs/PropertyReflection.h"
+#include "CTransform.h"
 
 namespace rigkit {
 namespace ecs {

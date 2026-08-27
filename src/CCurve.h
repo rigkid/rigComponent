@@ -6,13 +6,12 @@
  * @details Data and pure functions only; the point-dragging widget lives in `rigVectorEditor`.
  */
 
-#include "ecs/PropertyReflection.h"
-
-#include <glm/glm.hpp>
 #include <algorithm>
 #include <cmath>
+#include <glm/glm.hpp>
 #include <string>
 #include <vector>
+#include "ecs/PropertyReflection.h"
 
 namespace rigkit {
 namespace ecs {

@@ -39,6 +39,7 @@
 #include "CMusicTransport.h"
 #include "CNurbsSurface.h"
 #include "COrbitDrive.h"
+#include "COrthoView.h"
 #include "CPalette.h"
 #include "CPath.h"
 #include "CPath3d.h"
@@ -91,6 +92,7 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CLight>("Light", true);
 	ecs->registerComponent<ecs::CDriveHint>("DriveHint", true);
 	ecs->registerComponent<ecs::COrbitDrive>("OrbitDrive", true);
+	ecs->registerComponent<ecs::COrthoView>("OrthoView", true);
 	ecs->registerComponent<ecs::CModLfo>("ModLfo", true);
 	ecs->registerComponent<ecs::CModBinding>("ModBinding", true);
 	ecs->registerComponent<ecs::CTween>("Tween", true);

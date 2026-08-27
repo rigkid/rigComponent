@@ -42,6 +42,7 @@
 #include "CLine.h"
 #include "CMesh.h"
 #include "COrbitDrive.h"
+#include "COrthoView.h"
 #include "CPalette.h"
 #include "CPolygon.h"
 #include "CRectangle.h"
@@ -268,6 +269,34 @@ inline void lookAt(rigkit::ecs::CTransform& xf, const glm::vec3& eye, const glm:
 }
 
 /**
+ * @brief Aim a transform for a locked ortho face (Y-up).
+ * @details Top looks down -Y with +X right. Left / Right keep world +Y up.
+ */
+inline void poseOrthoView(rigkit::ecs::CTransform& xf, const rigkit::ecs::COrthoView& view,
+						  float distance) {
+	const float d = distance > 0.5f ? distance : 0.5f;
+	glm::vec3 eye = view.target;
+	glm::vec3 up{0.f, 1.f, 0.f};
+	switch (view.face) {
+	case rigkit::ecs::COrthoView::Face::Top:
+		eye += glm::vec3{0.f, d, 0.f};
+		up = {0.f, 0.f, -1.f};
+		break;
+	case rigkit::ecs::COrthoView::Face::Bottom:
+		eye += glm::vec3{0.f, -d, 0.f};
+		up = {0.f, 0.f, 1.f};
+		break;
+	case rigkit::ecs::COrthoView::Face::Left:
+		eye += glm::vec3{-d, 0.f, 0.f};
+		break;
+	case rigkit::ecs::COrthoView::Face::Right:
+		eye += glm::vec3{d, 0.f, 0.f};
+		break;
+	}
+	lookAt(xf, eye, view.target, up);
+}
+
+/**
  * @brief Camera entity (`CTransform` + `CCamera`).
  * @details Present via `rigRender3D` when `CCamera::active`. Pose is transform.
  */
@@ -288,6 +317,18 @@ entt::entity makeOrbitCamera(glm::vec3 target = {0.f, 0.f, 0.f}, float radius = 
 
 entt::entity makeOrbitCamera(rigkit::MEcs& ecs, glm::vec3 target = {0.f, 0.f, 0.f},
 							 float radius = 5.6f, float pitch = 0.36f, bool active = true,
+							 const std::string& name = {});
+
+/**
+ * @brief Inactive ortho camera locked to a face (`COrthoView` + `CCamera`).
+ * @details `CCamera::active` stays false so `rigRender3D` keeps the main bed.
+ * Open a dockable panel with `rigkit::openOrthoView` / `OrthoViewWindow`.
+ */
+entt::entity makeOrthoCamera(rigkit::ecs::COrthoView::Face face, glm::vec3 target = {0.f, 0.f, 0.f},
+							 float orthoHeight = 4.f, const std::string& name = {});
+
+entt::entity makeOrthoCamera(rigkit::MEcs& ecs, rigkit::ecs::COrthoView::Face face,
+							 glm::vec3 target = {0.f, 0.f, 0.f}, float orthoHeight = 4.f,
 							 const std::string& name = {});
 
 /**

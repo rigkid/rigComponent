@@ -15,7 +15,7 @@ namespace ecs {
  * @brief Portable camera POD - optics plus present chrome.
  * @details Pose lives on `CTransform` (same entity). Speaks `rig.spatial.camera`.
  * `rigRender3D` builds view from `CTransform::world` and projection from these fields.
- * `presentWidth` / `presentHeight` / `showFps` / `shade` are present choices, not optics.
+ * `presentWidth` / `presentHeight` / `shade` are present choices, not optics.
  * No GPU handles.
  */
 struct CCamera {
@@ -34,25 +34,21 @@ struct CCamera {
 	/// Low-res present size (0 = full window). Nearest-upscaled by `rigRender3D`.
 	int presentWidth = 0;
 	int presentHeight = 0;
-	/// Corner FPS readout (`SFpsOverlay` in rigRender3D). Off by default.
-	bool showFps = false;
 	/// Present shade. Wireframe is see-through edges; Sketch hides occluded edges.
 	enum class Shade : int { Solid = 0, Wireframe = 1, Sketch = 2 };
 	Shade shade = Shade::Solid;
 
 	/// Restore optics defaults (FOV, clips, projection). Keeps Active and
-	/// present chrome (lo-res size, FPS overlay, shade are product choices).
+	/// present chrome (lo-res size, shade).
 	void resetToDefaults() {
 		const bool keepActive = active;
 		const int keepW = presentWidth;
 		const int keepH = presentHeight;
-		const bool keepFps = showFps;
 		const Shade keepShade = shade;
 		*this = CCamera{};
 		active = keepActive;
 		presentWidth = keepW;
 		presentHeight = keepH;
-		showFps = keepFps;
 		shade = keepShade;
 	}
 
@@ -104,7 +100,6 @@ struct CCamera {
 			{6, "Aspect (0=viewport)", EPT_FLOAT, &aspect},
 			{7, "Present Width (0=full)", EPT_INT, &presentWidth},
 			{8, "Present Height (0=full)", EPT_INT, &presentHeight},
-			{9, "Show FPS", EPT_BOOL, &showFps},
 			{10, "Shade", EPT_ENUM, reinterpret_cast<int*>(&shade), kShadeNames, 3}};
 	}
 };

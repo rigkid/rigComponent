@@ -218,6 +218,27 @@ entt::entity makeOrbitCamera(rigkit::MEcs& ecs, glm::vec3 target, float radius, 
 	return e;
 }
 
+entt::entity makeOrthoCamera(rigkit::MEcs& ecs, rigkit::ecs::COrthoView::Face face, glm::vec3 target,
+							 float orthoHeight, const std::string& name) {
+	auto e = ecs.createEntity(name);
+	rigkit::ecs::COrthoView view;
+	view.face = face;
+	view.target = target;
+	rigkit::ecs::CCamera cam;
+	cam.active = false;
+	cam.projection = rigkit::ecs::CCamera::Projection::Orthographic;
+	cam.orthoHeight = orthoHeight > 0.05f ? orthoHeight : 0.05f;
+	cam.nearClip = 0.05f;
+	cam.farClip = 200.f;
+	rigkit::ecs::CTransform xf;
+	poseOrthoView(xf, view, cam.orthoHeight);
+	xf.world = xf.localMatrix();
+	ecs.addComponent(e, xf);
+	ecs.addComponent(e, cam);
+	ecs.addComponent(e, view);
+	return e;
+}
+
 entt::entity makeCadBox(rigkit::MEcs& ecs, float sizeX, float sizeY, float sizeZ, bool center,
 						const std::string& name) {
 	auto e = ecs.createEntity(name);
@@ -495,6 +516,12 @@ entt::entity makeOrbitCamera(glm::vec3 target, float radius, float pitch, bool a
 							 const std::string& name) {
 	auto* ecs = boundEcs();
 	return ecs ? makeOrbitCamera(*ecs, target, radius, pitch, active, name) : entt::null;
+}
+
+entt::entity makeOrthoCamera(rigkit::ecs::COrthoView::Face face, glm::vec3 target, float orthoHeight,
+							 const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeOrthoCamera(*ecs, face, target, orthoHeight, name) : entt::null;
 }
 
 entt::entity makeCadBox(float sizeX, float sizeY, float sizeZ, bool center,

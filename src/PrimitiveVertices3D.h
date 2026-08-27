@@ -1,5 +1,12 @@
 #pragma once
 
+/**
+ * @file
+ * @brief Expands the parametric 3D primitives into local-space triangle vertices.
+ * @details Subdivision is clamped, since face count grows as 20 * 4^n and Raspberry Pi pays for
+ * every triangle.
+ */
+
 #include <glm/glm.hpp>
 #include <vector>
 

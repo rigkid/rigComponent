@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <cmath>
 #include <vector>
 
 #include "CTransform.h"
@@ -70,21 +71,41 @@ struct CCamera {
 		return glm::inverse(transform.world);
 	}
 
+	/**
+	 * @brief Project a world point into viewport pixels (origin top-left).
+	 * @return false when the point is behind the camera (`clip.w` near zero).
+	 */
+	static bool projectToViewport(const CCamera& cam, const CTransform& camXf, glm::vec3 world,
+								  float viewW, float viewH, glm::vec2& outPx) {
+		if (viewW <= 1.f || viewH <= 1.f) {
+			return false;
+		}
+		const glm::mat4 vp = cam.projectionMatrix(viewW / viewH) * viewMatrix(camXf);
+		const glm::vec4 clip = vp * glm::vec4(world, 1.f);
+		if (std::fabs(clip.w) < 1e-6f) {
+			return false;
+		}
+		const glm::vec3 ndc = glm::vec3(clip) / clip.w;
+		outPx.x = (ndc.x * 0.5f + 0.5f) * viewW;
+		outPx.y = (1.f - (ndc.y * 0.5f + 0.5f)) * viewH;
+		return true;
+	}
+
 	std::vector<sProp> GetProperties() {
 		static constexpr const char* kProjectionNames[] = {"Perspective", "Orthographic"};
 		static constexpr const char* kShadeNames[] = {"Solid", "Wireframe", "Sketch"};
-		return {{0, "Active", EPT_BOOL, &active},
-				{1, "Projection", EPT_ENUM, reinterpret_cast<int*>(&projection), kProjectionNames,
-				 2},
-				{2, "FOV Y (deg)", EPT_FLOAT, &fovYDegrees},
-				{3, "Ortho Height", EPT_FLOAT, &orthoHeight},
-				{4, "Near", EPT_FLOAT, &nearClip},
-				{5, "Far", EPT_FLOAT, &farClip},
-				{6, "Aspect (0=viewport)", EPT_FLOAT, &aspect},
-				{7, "Present Width (0=full)", EPT_INT, &presentWidth},
-				{8, "Present Height (0=full)", EPT_INT, &presentHeight},
-				{9, "Show FPS", EPT_BOOL, &showFps},
-				{10, "Shade", EPT_ENUM, reinterpret_cast<int*>(&shade), kShadeNames, 3}};
+		return {
+			{0, "Active", EPT_BOOL, &active},
+			{1, "Projection", EPT_ENUM, reinterpret_cast<int*>(&projection), kProjectionNames, 2},
+			{2, "FOV Y (deg)", EPT_FLOAT, &fovYDegrees},
+			{3, "Ortho Height", EPT_FLOAT, &orthoHeight},
+			{4, "Near", EPT_FLOAT, &nearClip},
+			{5, "Far", EPT_FLOAT, &farClip},
+			{6, "Aspect (0=viewport)", EPT_FLOAT, &aspect},
+			{7, "Present Width (0=full)", EPT_INT, &presentWidth},
+			{8, "Present Height (0=full)", EPT_INT, &presentHeight},
+			{9, "Show FPS", EPT_BOOL, &showFps},
+			{10, "Shade", EPT_ENUM, reinterpret_cast<int*>(&shade), kShadeNames, 3}};
 	}
 };
 

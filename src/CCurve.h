@@ -1,5 +1,11 @@
 #pragma once
 
+/**
+ * @file
+ * @brief `CCurve` transfer-curve component with its preset, evaluation, and LUT helpers.
+ * @details Data and pure functions only; the point-dragging widget lives in `rigVectorEditor`.
+ */
+
 #include "ecs/PropertyReflection.h"
 
 #include <glm/glm.hpp>

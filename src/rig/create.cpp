@@ -251,8 +251,8 @@ entt::entity makeCadSphere(rigkit::MEcs& ecs, float radius, const std::string& n
 }
 
 entt::entity makeCadBoolean(rigkit::MEcs& ecs, rigkit::ecs::CCadBoolean::Op op,
-							std::vector<std::string> operands,
-							const rigkit::ecs::CDrawStyle& style, const std::string& name) {
+							std::vector<std::string> operands, const rigkit::ecs::CDrawStyle& style,
+							const std::string& name) {
 	auto e = ecs.createEntity(name);
 	ecs.addComponent(e, rigkit::ecs::CTransform{});
 	ecs.addComponent(e, style);
@@ -278,8 +278,52 @@ entt::entity makeCadDimension(rigkit::MEcs& ecs, rigkit::ecs::CCadDimension::Kin
 	return e;
 }
 
-entt::entity makeMeshGrid(rigkit::MEcs& ecs, int half, float y, const rigkit::ecs::CDrawStyle& style,
-						  const std::string& name) {
+entt::entity makeCadReferenceLine(rigkit::MEcs& ecs, glm::vec3 origin, glm::vec3 direction,
+								  const std::string& name) {
+	auto e = ecs.createEntity(name);
+	ecs.addComponent(e, rigkit::ecs::CTransform{});
+	rigkit::ecs::CCadReferenceLine line;
+	line.origin = origin;
+	line.direction = direction;
+	ecs.addComponent(e, line);
+	return e;
+}
+
+entt::entity makeCadReferenceLineThrough(rigkit::MEcs& ecs, const std::string& a,
+										 const std::string& b, const std::string& name) {
+	auto e = ecs.createEntity(name);
+	ecs.addComponent(e, rigkit::ecs::CTransform{});
+	rigkit::ecs::CCadReferenceLine line;
+	line.a = a;
+	line.b = b;
+	ecs.addComponent(e, line);
+	return e;
+}
+
+entt::entity makeCadReferencePlane(rigkit::MEcs& ecs, glm::vec3 origin, glm::vec3 normal,
+								   const std::string& name) {
+	auto e = ecs.createEntity(name);
+	ecs.addComponent(e, rigkit::ecs::CTransform{});
+	rigkit::ecs::CCadReferencePlane plane;
+	plane.origin = origin;
+	plane.normal = normal;
+	ecs.addComponent(e, plane);
+	return e;
+}
+
+entt::entity makeCadReferencePlaneThrough(rigkit::MEcs& ecs, const std::string& a, glm::vec3 normal,
+										  const std::string& name) {
+	auto e = ecs.createEntity(name);
+	ecs.addComponent(e, rigkit::ecs::CTransform{});
+	rigkit::ecs::CCadReferencePlane plane;
+	plane.a = a;
+	plane.normal = normal;
+	ecs.addComponent(e, plane);
+	return e;
+}
+
+entt::entity makeMeshGrid(rigkit::MEcs& ecs, int half, float y,
+						  const rigkit::ecs::CDrawStyle& style, const std::string& name) {
 	if (half < 1) {
 		half = 1;
 	}
@@ -298,8 +342,8 @@ entt::entity makeMeshGrid(rigkit::MEcs& ecs, int half, float y, const rigkit::ec
 		indices.push_back(v++);
 		indices.push_back(v++);
 	}
-	return makeMesh(ecs, std::move(positions), std::move(indices),
-					rigkit::ecs::CMesh::Mode::Lines, style, name);
+	return makeMesh(ecs, std::move(positions), std::move(indices), rigkit::ecs::CMesh::Mode::Lines,
+					style, name);
 }
 
 entt::entity makeLight(rigkit::MEcs& ecs, glm::vec3 position, rigkit::ecs::CLight::Type type,
@@ -359,8 +403,8 @@ entt::entity makeRect(float x, float y, float w, float h, const rigkit::ecs::CDr
 	return ecs ? makeRect(*ecs, x, y, w, h, style, name) : entt::null;
 }
 
-entt::entity makeEllipse(float x, float y, float w, float h,
-						 const rigkit::ecs::CDrawStyle& style, const std::string& name) {
+entt::entity makeEllipse(float x, float y, float w, float h, const rigkit::ecs::CDrawStyle& style,
+						 const std::string& name) {
 	auto* ecs = boundEcs();
 	return ecs ? makeEllipse(*ecs, x, y, w, h, style, name) : entt::null;
 }
@@ -371,8 +415,8 @@ entt::entity makeCircle(float x, float y, float radius, const rigkit::ecs::CDraw
 	return ecs ? makeCircle(*ecs, x, y, radius, style, name) : entt::null;
 }
 
-entt::entity makeLine(float x1, float y1, float x2, float y2,
-					  const rigkit::ecs::CDrawStyle& style, const std::string& name) {
+entt::entity makeLine(float x1, float y1, float x2, float y2, const rigkit::ecs::CDrawStyle& style,
+					  const std::string& name) {
 	auto* ecs = boundEcs();
 	return ecs ? makeLine(*ecs, x1, y1, x2, y2, style, name) : entt::null;
 }
@@ -380,13 +424,11 @@ entt::entity makeLine(float x1, float y1, float x2, float y2,
 entt::entity makeRegularPolygon(float x, float y, float radius, int sides, float rotation,
 								const rigkit::ecs::CDrawStyle& style, const std::string& name) {
 	auto* ecs = boundEcs();
-	return ecs ? makeRegularPolygon(*ecs, x, y, radius, sides, rotation, style, name)
-			   : entt::null;
+	return ecs ? makeRegularPolygon(*ecs, x, y, radius, sides, rotation, style, name) : entt::null;
 }
 
-entt::entity makeStar(float x, float y, float radius, float innerRadius, int points,
-					  float rotation, const rigkit::ecs::CDrawStyle& style,
-					  const std::string& name) {
+entt::entity makeStar(float x, float y, float radius, float innerRadius, int points, float rotation,
+					  const rigkit::ecs::CDrawStyle& style, const std::string& name) {
 	auto* ecs = boundEcs();
 	return ecs ? makeStar(*ecs, x, y, radius, innerRadius, points, rotation, style, name)
 			   : entt::null;
@@ -424,8 +466,8 @@ entt::entity makeMeshTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c,
 	return ecs ? makeMeshTriangle(*ecs, a, b, c, style, name) : entt::null;
 }
 
-entt::entity makeMeshQuad(float x, float y, float w, float h,
-						  const rigkit::ecs::CDrawStyle& style, const std::string& name) {
+entt::entity makeMeshQuad(float x, float y, float w, float h, const rigkit::ecs::CDrawStyle& style,
+						  const std::string& name) {
 	auto* ecs = boundEcs();
 	return ecs ? makeMeshQuad(*ecs, x, y, w, h, style, name) : entt::null;
 }
@@ -480,6 +522,28 @@ entt::entity makeCadDimension(rigkit::ecs::CCadDimension::Kind kind, const std::
 							  const std::string& name) {
 	auto* ecs = boundEcs();
 	return ecs ? makeCadDimension(*ecs, kind, a, b, value, measurement, name) : entt::null;
+}
+
+entt::entity makeCadReferenceLine(glm::vec3 origin, glm::vec3 direction, const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeCadReferenceLine(*ecs, origin, direction, name) : entt::null;
+}
+
+entt::entity makeCadReferenceLineThrough(const std::string& a, const std::string& b,
+										 const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeCadReferenceLineThrough(*ecs, a, b, name) : entt::null;
+}
+
+entt::entity makeCadReferencePlane(glm::vec3 origin, glm::vec3 normal, const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeCadReferencePlane(*ecs, origin, normal, name) : entt::null;
+}
+
+entt::entity makeCadReferencePlaneThrough(const std::string& a, glm::vec3 normal,
+										  const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makeCadReferencePlaneThrough(*ecs, a, normal, name) : entt::null;
 }
 
 entt::entity makeMeshGrid(int half, float y, const rigkit::ecs::CDrawStyle& style,

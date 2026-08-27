@@ -34,6 +34,8 @@ struct CMesh {
 	std::vector<uint8_t> facePalette;
 	/// Per-vertex UVs; empty or size == positions.size().
 	std::vector<glm::vec2> texcoords;
+	/// Bump after in-place buffer edits so the GPU slot re-uploads.
+	uint32_t revision = 0;
 
 	/// Inspector mirrors for vector sizes (refreshed in GetProperties).
 	int propVertexCount = 0;

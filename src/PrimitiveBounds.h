@@ -1,5 +1,11 @@
 #pragma once
 
+/**
+ * @file
+ * @brief Axis-aligned bounds for whichever 2D primitive an entity carries.
+ * @details Local space only — apply the entity's `CTransform` yourself for world bounds.
+ */
+
 #include <glm/glm.hpp>
 #include <entt/entt.hpp>
 

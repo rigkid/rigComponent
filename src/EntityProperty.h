@@ -1,5 +1,12 @@
 #pragma once
 
+/**
+ * @file
+ * @brief Reads and writes reflected entity properties by name.
+ * @details Numeric scalars only, resolved through `GetProperties`. Dotted contract keys such as
+ * `position.y` map onto the display names the components register.
+ */
+
 #include "ecs/MEcs.h"
 
 #include <glm/glm.hpp>

@@ -1,5 +1,11 @@
 #pragma once
 
+/**
+ * @file
+ * @brief Expands the parametric 2D primitives into local-space vertex lists.
+ * @details Segment counts follow radius, so small shapes stay cheap to tessellate on Raspberry Pi.
+ */
+
 #include <glm/glm.hpp>
 #include <vector>
 

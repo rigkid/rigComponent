@@ -1,42 +1,10 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include <cstdint>
-#include <string>
-#include <vector>
-
-#include "CArc.h"
-#include "CCadBoolean.h"
-#include "CCadBox.h"
-#include "CCadDimension.h"
-#include "CCadCylinder.h"
-#include "CCadSphere.h"
-#include "CCamera.h"
-#include "CDrawStyle.h"
-#include "COrbitDrive.h"
-#include "CEllipse.h"
-#include "CGroup.h"
-#include "CIndexedAtlas.h"
-#include "CLight.h"
-#include "CLine.h"
-#include "CPalette.h"
-#include "CMesh.h"
-#include "CPolygon.h"
-#include "CRectangle.h"
-#include "CRegularPolygon.h"
-#include "CRing.h"
-#include "CSphere.h"
-#include "CStar.h"
-#include "CTransform.h"
-#include "ecs/MEcs.h"
-
-namespace rig {
-
 /**
- * @brief Entity creators — write POD components only.
- * @details NO CODE JUST DATA. Present via rigSystems (2D) or rigRender3D (active camera).
+ * @file
+ * @brief Creators an artist calls to make entities — `makeRect` and friends.
+ * @details NO CODE JUST DATA: creators write POD components only. Present via
+ * rigSystems (2D) or rigRender3D (active camera).
  *
  * Every creator comes in two forms. The bare form writes to the ECS bound by
  * setEcs, which registering **rigComponent** already does, so a sketch reads:
@@ -48,6 +16,42 @@ namespace rig {
  * The form taking an explicit `MEcs&` stays for packs, tools, and tests that
  * target a specific registry.
  */
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <cstdint>
+#include <string>
+#include <vector>
+
+#include "CArc.h"
+#include "CCadBoolean.h"
+#include "CCadBox.h"
+#include "CCadCylinder.h"
+#include "CCadDimension.h"
+#include "CCadReferenceLine.h"
+#include "CCadReferencePlane.h"
+#include "CCadSphere.h"
+#include "CCamera.h"
+#include "CDrawStyle.h"
+#include "CEllipse.h"
+#include "CGroup.h"
+#include "CIndexedAtlas.h"
+#include "CLight.h"
+#include "CLine.h"
+#include "CMesh.h"
+#include "COrbitDrive.h"
+#include "CPalette.h"
+#include "CPolygon.h"
+#include "CRectangle.h"
+#include "CRegularPolygon.h"
+#include "CRing.h"
+#include "CSphere.h"
+#include "CStar.h"
+#include "CTransform.h"
+#include "ecs/MEcs.h"
+
+namespace rig {
 
 inline rigkit::ecs::CDrawStyle fill(float r, float g, float b, float a = 1.0f) {
 	rigkit::ecs::CDrawStyle s;
@@ -145,8 +149,7 @@ entt::entity makeRegularPolygon(rigkit::MEcs& ecs, float x, float y, float radiu
  * @param radius Centre to outer point. @param innerRadius Absolute, not a ratio.
  */
 entt::entity makeStar(float x, float y, float radius, float innerRadius, int points = 5,
-					  float rotation = 0.0f,
-					  const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
+					  float rotation = 0.0f, const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
 					  const std::string& name = {});
 
 entt::entity makeStar(rigkit::MEcs& ecs, float x, float y, float radius, float innerRadius,
@@ -218,8 +221,7 @@ entt::entity makeMeshQuad(rigkit::MEcs& ecs, float x, float y, float w, float h,
 						  const std::string& name = {});
 
 /** @brief Axis-aligned box at origin (size = full extents). Faces CCW from outside. */
-entt::entity makeMeshBox(float size = 1.0f,
-						 const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
+entt::entity makeMeshBox(float size = 1.0f, const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
 						 const std::string& name = {});
 
 entt::entity makeMeshBox(rigkit::MEcs& ecs, float size = 1.0f,
@@ -282,8 +284,7 @@ entt::entity makeCamera(rigkit::MEcs& ecs, glm::vec3 position, bool active = tru
  * @param pitch Radians; ~0.36 is a slight downward look.
  */
 entt::entity makeOrbitCamera(glm::vec3 target = {0.f, 0.f, 0.f}, float radius = 5.6f,
-							 float pitch = 0.36f, bool active = true,
-							 const std::string& name = {});
+							 float pitch = 0.36f, bool active = true, const std::string& name = {});
 
 entt::entity makeOrbitCamera(rigkit::MEcs& ecs, glm::vec3 target = {0.f, 0.f, 0.f},
 							 float radius = 5.6f, float pitch = 0.36f, bool active = true,
@@ -334,6 +335,49 @@ entt::entity makeCadDimension(rigkit::ecs::CCadDimension::Kind kind, const std::
 entt::entity makeCadDimension(rigkit::MEcs& ecs, rigkit::ecs::CCadDimension::Kind kind,
 							  const std::string& a, const std::string& b, float value,
 							  bool measurement = false, const std::string& name = {});
+
+/**
+ * @brief Unbounded reference line (`CCadReferenceLine`) through `origin` along `direction`.
+ * @details A datum, not a solid — leave it out of `makeCadBoolean` operands.
+ * `direction` need not be unit length.
+ */
+entt::entity makeCadReferenceLine(glm::vec3 origin, glm::vec3 direction,
+								  const std::string& name = {});
+
+entt::entity makeCadReferenceLine(rigkit::MEcs& ecs, glm::vec3 origin, glm::vec3 direction,
+								  const std::string& name = {});
+
+/**
+ * @brief Unbounded reference line through two named entities.
+ * @details The line follows `a` and `b` when the model rebuilds, so it needs no
+ * coordinates of its own.
+ */
+entt::entity makeCadReferenceLineThrough(const std::string& a, const std::string& b,
+										 const std::string& name = {});
+
+entt::entity makeCadReferenceLineThrough(rigkit::MEcs& ecs, const std::string& a,
+										 const std::string& b, const std::string& name = {});
+
+/**
+ * @brief Unbounded reference plane (`CCadReferencePlane`) through `origin` facing `normal`.
+ * @details A datum, not a solid, and it cuts nothing. `normal` need not be unit length.
+ */
+entt::entity makeCadReferencePlane(glm::vec3 origin, glm::vec3 normal,
+								   const std::string& name = {});
+
+entt::entity makeCadReferencePlane(rigkit::MEcs& ecs, glm::vec3 origin, glm::vec3 normal,
+								   const std::string& name = {});
+
+/**
+ * @brief Unbounded reference plane through a named entity, facing `normal`.
+ * @details The plane follows `a` when the model rebuilds. One entity fixes a
+ * point but not an orientation, so `normal` stays authored.
+ */
+entt::entity makeCadReferencePlaneThrough(const std::string& a, glm::vec3 normal,
+										  const std::string& name = {});
+
+entt::entity makeCadReferencePlaneThrough(rigkit::MEcs& ecs, const std::string& a, glm::vec3 normal,
+										  const std::string& name = {});
 
 /**
  * @brief Light entity (`CTransform` + `CLight`).

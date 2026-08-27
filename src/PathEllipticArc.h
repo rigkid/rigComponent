@@ -1,5 +1,11 @@
 #pragma once
 
+/**
+ * @file
+ * @brief Builds, flattens, splits, and transforms SVG elliptical arcs held as `CPath::ArcTo`.
+ * @details The portable `.rig` path schema has no arc command, so expand to cubics before saving.
+ */
+
 #include <glm/glm.hpp>
 #include <vector>
 #include "CPath.h"

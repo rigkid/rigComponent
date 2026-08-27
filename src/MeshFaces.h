@@ -1,5 +1,12 @@
 #pragma once
 
+/**
+ * @file
+ * @brief Reads, welds, and tessellates the authored n-gon faces of a `CMesh`.
+ * @details `loops` and `loopSizes` carry the authored faces; `indices` is the triangle list the
+ * renderer draws. Call `meshFinishFaces` after create or import so the two stay in step.
+ */
+
 #include "CMesh.h"
 
 #include <cstdint>

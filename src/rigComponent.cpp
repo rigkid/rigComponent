@@ -11,6 +11,8 @@
 #include "CCadDimension.h"
 #include "CCadExtrude.h"
 #include "CCadFillet.h"
+#include "CCadReferenceLine.h"
+#include "CCadReferencePlane.h"
 #include "CCadRevolve.h"
 #include "CCadSphere.h"
 #include "CCamera.h"
@@ -116,6 +118,8 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CCadFillet>("CadFillet", true);
 	ecs->registerComponent<ecs::CCadChamfer>("CadChamfer", true);
 	ecs->registerComponent<ecs::CCadDimension>("CadDimension", true);
+	ecs->registerComponent<ecs::CCadReferenceLine>("CadReferenceLine", true);
+	ecs->registerComponent<ecs::CCadReferencePlane>("CadReferencePlane", true);
 	ecs->registerComponent<ecs::CRing>("Ring", true);
 	ecs->registerComponent<ecs::CPath>("Path", true);
 	ecs->registerComponent<ecs::CPath3d>("Path3d", true);

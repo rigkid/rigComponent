@@ -11,7 +11,7 @@ namespace ecs {
 /**
  * @brief Optional label: this entity is driven by a node-graph ref / out.
  * @details Plain string for Properties / Scene clarity (Pixile-style “linked”
- * cue). Bindings live on `ref.*` nodes (`entity` + `prop`); this is display only.
+ * cue). Bindings live on @c ref\.* nodes (`entity` + `prop`); this is display only.
  */
 struct CDriveHint {
 	std::string label;

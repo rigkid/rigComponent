@@ -1,5 +1,11 @@
 #pragma once
 
+/**
+ * @file
+ * @brief Vertex-pair key naming one undirected edge of a mesh.
+ * @details Derived from face loops when needed; the mesh keeps no edge table of its own.
+ */
+
 #include <cstdint>
 
 namespace rigkit {

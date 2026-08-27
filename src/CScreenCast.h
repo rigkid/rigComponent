@@ -1,5 +1,12 @@
 #pragma once
 
+/**
+ * @file
+ * @brief Screen-cast session POD and its protocol / payload / state enums.
+ * @details Data only. Receiver discovery, window capture, and sockets live in
+ * rigScreenCast.
+ */
+
 #include <string>
 #include <vector>
 

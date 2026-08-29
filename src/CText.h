@@ -40,13 +40,15 @@ struct CText {
 	std::vector<FontAxisValue> axes;
 	std::string features; ///< e.g. "liga,ss01" - optional OT features string.
 	bool useKerning = true;
+	float tracking = 0.f; ///< thousandths of an em
 
 	std::vector<sProp> GetProperties() {
 		return {{0, "Text", EPT_STRING, &text},
 				{1, "Font Size", EPT_FLOAT, &fontSize},
 				{2, "Color", EPT_COLOR, &rgba.x},
 				{3, "Features", EPT_STRING, &features},
-				{4, "Kerning", EPT_BOOL, &useKerning}};
+				{4, "Kerning", EPT_BOOL, &useKerning},
+				{5, "Tracking", EPT_FLOAT, &tracking}};
 	}
 };
 

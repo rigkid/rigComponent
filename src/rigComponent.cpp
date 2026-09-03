@@ -36,6 +36,7 @@
 #include "CModBinding.h"
 #include "CModLfo.h"
 #include "CMusicClock.h"
+#include "CName.h"
 #include "CMusicTransport.h"
 #include "CNurbsSurface.h"
 #include "COrbitDrive.h"
@@ -47,6 +48,8 @@
 #include "CRectangle.h"
 #include "CRegularPolygon.h"
 #include "CRelationship.h"
+#include "CRenderBlend.h"
+#include "CRenderVisibility.h"
 #include "CRing.h"
 #include "CScreenCast.h"
 #include "CScreenCastReceive.h"
@@ -59,6 +62,7 @@
 #include "CText.h"
 #include "CTransform.h"
 #include "CTween.h"
+#include "CUiPanel.h"
 #include "CVertexSelection.h"
 #include "rig/create.h"
 
@@ -132,6 +136,12 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CSelectable>("Selectable", true);
 	ecs->registerComponent<ecs::CGroup>("Group", true);
 	ecs->registerComponent<ecs::CLayer>("Layer", true);
+	ecs->registerComponent<ecs::CName>("Name", true);
+	ecs->registerComponent<ecs::CRenderVisibility>("RenderVisibility", true);
+	ecs->registerComponent<ecs::CRenderBlend>("RenderBlend", true);
+	ecs->registerComponent<ecs::CUiPanel>("UiPanel", true);
+	ecs->registerComponent<ecs::CUiGroup>("UiGroup", true);
+	ecs->registerComponent<ecs::CUiControl>("UiControl", true);
 	ecs->registerComponent<ecs::CFaceSelection>("FaceSelection", true);
 	ecs->registerComponent<ecs::CVertexSelection>("VertexSelection", true);
 	ecs->registerComponent<ecs::CEdgeSelection>("EdgeSelection", true);

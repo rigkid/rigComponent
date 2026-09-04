@@ -230,10 +230,12 @@ void applyLinear(ecs::CPath::Command& cmd, float a, float b, float c, float d) {
 	cmd.radii.x = std::sqrt(std::max(0.f, ev1));
 	cmd.radii.y = std::sqrt(std::max(0.f, ev2));
 
-	if (std::abs(m01) > 1e-12f || std::abs(m00 - ev1) > 1e-12f) {
+	if (std::abs(m01) > 1e-12f) {
 		cmd.xRotDeg = std::atan2(m01, ev1 - m11) * (180.f / kPi);
 	} else {
-		cmd.xRotDeg = 0.f;
+		// Axis-aligned result: atan2(0, ev1 - m11) is 0/0 when the major axis
+		// lies on Y, so pick the axis by comparing the diagonal directly.
+		cmd.xRotDeg = (m00 >= m11) ? 0.f : 90.f;
 	}
 	if (a * d - c * b < 0.f) {
 		cmd.sweep = !cmd.sweep;

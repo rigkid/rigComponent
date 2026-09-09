@@ -16,6 +16,7 @@ struct CRelationship {
 	static constexpr bool kNoProperties = true;
 
 	entt::entity parent{entt::null};
+	int order = 0;
 };
 
 } // namespace ecs

@@ -10,6 +10,7 @@ add_library(${PACK_NAME} STATIC
 	src/PrimitiveVertices.cpp
 	src/PrimitiveVertices3D.cpp
 	src/rig/create.cpp
+	src/rig/sketch.cpp
 	src/PathEllipticArc.cpp
 	src/PathEllipticArc.h
 )

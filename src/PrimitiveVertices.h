@@ -46,6 +46,12 @@ std::vector<glm::vec2> verticesOf(const CArc& shape, int segments = 0);
  */
 std::vector<glm::vec2> verticesOf(const CSpline& shape, int segments = 0);
 
+/**
+ * @brief Point at normalized parameter @p t in [0, 1] along the knot domain.
+ * @return {0,0} when the spline cannot be evaluated.
+ */
+glm::vec2 pointOn(const CSpline& shape, float t);
+
 /** @brief Outer and inner rims of a ring, same winding and matching lengths. */
 void rimsOf(const CRing& shape, std::vector<glm::vec2>& outer, std::vector<glm::vec2>& inner,
 			int segments = 0);

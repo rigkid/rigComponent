@@ -4,7 +4,7 @@
  * @file
  * @brief Screen-cast session POD and its protocol / payload / state enums.
  * @details Data only. Receiver discovery, window capture, and sockets live in
- * rigScreenCast.
+ * rigScreenCast (AirPlay / TV / host window). App-to-app AV is **rigCast**.
  */
 
 #include <string>

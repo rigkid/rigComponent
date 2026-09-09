@@ -1,22 +1,12 @@
 #include "rigComponent.h"
 
-#include "core/pack/PackRegistry.h"
 #include "core/RigKitEngine.h"
-#include "ecs/components/CGuide.h"
+#include "core/pack/PackRegistry.h"
 #include "ecs/MEcs.h"
+#include "ecs/components/CGuide.h"
+#include "CAnchor.h"
 #include "CArc.h"
 #include "CAssetRef.h"
-#include "CCadBoolean.h"
-#include "CCadBox.h"
-#include "CCadChamfer.h"
-#include "CCadCylinder.h"
-#include "CCadDimension.h"
-#include "CCadExtrude.h"
-#include "CCadFillet.h"
-#include "CCadReferenceLine.h"
-#include "CCadReferencePlane.h"
-#include "CCadRevolve.h"
-#include "CCadSphere.h"
 #include "CCamera.h"
 #include "CCanvas.h"
 #include "CCastReceiver.h"
@@ -33,11 +23,7 @@
 #include "CLight.h"
 #include "CLine.h"
 #include "CMesh.h"
-#include "CModBinding.h"
-#include "CModLfo.h"
-#include "CMusicClock.h"
 #include "CName.h"
-#include "CMusicTransport.h"
 #include "CNurbsSurface.h"
 #include "COrbitDrive.h"
 #include "COrthoView.h"
@@ -49,6 +35,8 @@
 #include "CRegularPolygon.h"
 #include "CRelationship.h"
 #include "CRenderBlend.h"
+#include "CRenderEnvironment.h"
+#include "CRenderMaterial.h"
 #include "CRenderVisibility.h"
 #include "CRing.h"
 #include "CScreenCast.h"
@@ -61,7 +49,6 @@
 #include "CStar.h"
 #include "CText.h"
 #include "CTransform.h"
-#include "CTween.h"
 #include "CUiPanel.h"
 #include "CVertexSelection.h"
 #include "rig/create.h"
@@ -91,17 +78,13 @@ void rigComponent::setup() {
 	rig::setEcs(ecs);
 
 	ecs->registerComponent<ecs::CTransform>("Transform", true);
+	ecs->registerComponent<ecs::CAnchor>("Anchor", true);
 	ecs->registerComponent<ecs::CRelationship>("Relationship", true);
 	ecs->registerComponent<ecs::CCamera>("Camera", true);
 	ecs->registerComponent<ecs::CLight>("Light", true);
 	ecs->registerComponent<ecs::CDriveHint>("DriveHint", true);
 	ecs->registerComponent<ecs::COrbitDrive>("OrbitDrive", true);
 	ecs->registerComponent<ecs::COrthoView>("OrthoView", true);
-	ecs->registerComponent<ecs::CModLfo>("ModLfo", true);
-	ecs->registerComponent<ecs::CModBinding>("ModBinding", true);
-	ecs->registerComponent<ecs::CTween>("Tween", true);
-	ecs->registerComponent<ecs::CMusicClock>("MusicClock", true);
-	ecs->registerComponent<ecs::CMusicTransport>("MusicTransport", true);
 	ecs->registerComponent<ecs::CPalette>("Palette", true);
 	ecs->registerComponent<ecs::CIndexedAtlas>("IndexedAtlas", true);
 	ecs->registerComponent<ecs::CRectangle>("Rectangle", true);
@@ -114,17 +97,6 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CSpline>("Spline", true);
 	ecs->registerComponent<ecs::CSpline3d>("Spline3d", true);
 	ecs->registerComponent<ecs::CNurbsSurface>("NurbsSurface", true);
-	ecs->registerComponent<ecs::CCadBox>("CadBox", true);
-	ecs->registerComponent<ecs::CCadCylinder>("CadCylinder", true);
-	ecs->registerComponent<ecs::CCadSphere>("CadSphere", true);
-	ecs->registerComponent<ecs::CCadExtrude>("CadExtrude", true);
-	ecs->registerComponent<ecs::CCadRevolve>("CadRevolve", true);
-	ecs->registerComponent<ecs::CCadBoolean>("CadBoolean", true);
-	ecs->registerComponent<ecs::CCadFillet>("CadFillet", true);
-	ecs->registerComponent<ecs::CCadChamfer>("CadChamfer", true);
-	ecs->registerComponent<ecs::CCadDimension>("CadDimension", true);
-	ecs->registerComponent<ecs::CCadReferenceLine>("CadReferenceLine", true);
-	ecs->registerComponent<ecs::CCadReferencePlane>("CadReferencePlane", true);
 	ecs->registerComponent<ecs::CRing>("Ring", true);
 	ecs->registerComponent<ecs::CPath>("Path", true);
 	ecs->registerComponent<ecs::CPath3d>("Path3d", true);
@@ -139,6 +111,8 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CName>("Name", true);
 	ecs->registerComponent<ecs::CRenderVisibility>("RenderVisibility", true);
 	ecs->registerComponent<ecs::CRenderBlend>("RenderBlend", true);
+	ecs->registerComponent<ecs::CRenderMaterial>("RenderMaterial", true);
+	ecs->registerComponent<ecs::CRenderEnvironment>("RenderEnvironment", false);
 	ecs->registerComponent<ecs::CUiPanel>("UiPanel", true);
 	ecs->registerComponent<ecs::CUiGroup>("UiGroup", true);
 	ecs->registerComponent<ecs::CUiControl>("UiControl", true);

@@ -38,5 +38,12 @@ std::optional<float> readEntityProperty(MEcs& ecs, std::string_view entityName,
 bool writeEntityVec2Property(MEcs& ecs, entt::entity entity, std::string_view propertyKey,
 							 glm::vec2 value);
 
+/**
+ * @brief Drop cached GetProperties pointers.
+ * @details Call when reflected data moves (e.g. `pullEffectDriveSlots` rebuilds
+ * `driveSlots`). The next write re-resolves.
+ */
+void invalidateEntityPropertyCache();
+
 } // namespace ecs
 } // namespace rigkit

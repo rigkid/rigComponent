@@ -17,22 +17,15 @@
  * target a specific registry.
  */
 
-#include <cstdint>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <cstdint>
 #include <string>
 #include <vector>
 
 #include "ecs/MEcs.h"
 #include "CArc.h"
-#include "CCadBoolean.h"
-#include "CCadBox.h"
-#include "CCadCylinder.h"
-#include "CCadDimension.h"
-#include "CCadReferenceLine.h"
-#include "CCadReferencePlane.h"
-#include "CCadSphere.h"
 #include "CCamera.h"
 #include "CDrawStyle.h"
 #include "CEllipse.h"
@@ -44,6 +37,7 @@
 #include "COrbitDrive.h"
 #include "COrthoView.h"
 #include "CPalette.h"
+#include "CPath.h"
 #include "CPolygon.h"
 #include "CRectangle.h"
 #include "CRegularPolygon.h"
@@ -85,7 +79,7 @@ inline rigkit::ecs::CDrawStyle fillAndStroke(float fr, float fg, float fb, float
 /**
  * @brief Bind the ECS that the bare creators write to.
  * @details `rigComponent::setup()` binds the host ECS, so apps rarely call this.
- * Mirrors `rig::setGraphics` for immediate draw. Pass nullptr to unbind.
+ * Pass nullptr to unbind.
  * @see currentEcs
  */
 void setEcs(rigkit::MEcs* ecs);
@@ -166,6 +160,19 @@ entt::entity makePolygon(std::vector<glm::vec2> points, bool closed = true,
 entt::entity makePolygon(rigkit::MEcs& ecs, std::vector<glm::vec2> points, bool closed = true,
 						 const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
 						 const std::string& name = {});
+
+/**
+ * @brief Vector path from command list (`rig.geometry.path`) - true curves.
+ * @details Cubics / quads / arcs stay commands; renderers flatten for display
+ * only. Points are local; pose lives on the entity's `CTransform`.
+ */
+entt::entity makePath(rigkit::ecs::CPath path,
+					  const rigkit::ecs::CDrawStyle& style = stroke(1, 1, 1),
+					  const std::string& name = {});
+
+entt::entity makePath(rigkit::MEcs& ecs, rigkit::ecs::CPath path,
+					  const rigkit::ecs::CDrawStyle& style = stroke(1, 1, 1),
+					  const std::string& name = {});
 
 /** @brief Circular arc. @param pie Close through the centre. Angles in degrees. */
 entt::entity makeArc(float x, float y, float radius, float startAngle, float endAngle,
@@ -330,95 +337,6 @@ entt::entity makeOrthoCamera(rigkit::ecs::COrthoView::Face face, glm::vec3 targe
 entt::entity makeOrthoCamera(rigkit::MEcs& ecs, rigkit::ecs::COrthoView::Face face,
 							 glm::vec3 target = {0.f, 0.f, 0.f}, float orthoHeight = 4.f,
 							 const std::string& name = {});
-
-/**
- * @brief CAD box solid (`CCadBox`). No draw style - bake or add `CDrawStyle`.
- */
-entt::entity makeCadBox(float sizeX, float sizeY, float sizeZ, bool center = true,
-						const std::string& name = {});
-
-entt::entity makeCadBox(rigkit::MEcs& ecs, float sizeX, float sizeY, float sizeZ,
-						bool center = true, const std::string& name = {});
-
-/** @brief CAD cylinder (`CCadCylinder`), height along +Y. */
-entt::entity makeCadCylinder(float radius, float height, bool center = true,
-							 const std::string& name = {});
-
-entt::entity makeCadCylinder(rigkit::MEcs& ecs, float radius, float height, bool center = true,
-							 const std::string& name = {});
-
-/** @brief CAD sphere (`CCadSphere`) at the local origin. */
-entt::entity makeCadSphere(float radius, const std::string& name = {});
-
-entt::entity makeCadSphere(rigkit::MEcs& ecs, float radius, const std::string& name = {});
-
-/**
- * @brief CAD boolean (`CCadBoolean`). Operand strings are entity names.
- * @details Difference is `operands[0]` minus the rest. Adds `CDrawStyle`.
- */
-entt::entity makeCadBoolean(rigkit::ecs::CCadBoolean::Op op, std::vector<std::string> operands,
-							const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
-							const std::string& name = {});
-
-entt::entity makeCadBoolean(rigkit::MEcs& ecs, rigkit::ecs::CCadBoolean::Op op,
-							std::vector<std::string> operands,
-							const rigkit::ecs::CDrawStyle& style = fill(1, 1, 1),
-							const std::string& name = {});
-
-/**
- * @brief CAD datum (`CCadDimension`). `a` / `b` are entity names.
- * @details `measurement` true = label only. Pose for the label is optional.
- */
-entt::entity makeCadDimension(rigkit::ecs::CCadDimension::Kind kind, const std::string& a,
-							  const std::string& b, float value, bool measurement = false,
-							  const std::string& name = {});
-
-entt::entity makeCadDimension(rigkit::MEcs& ecs, rigkit::ecs::CCadDimension::Kind kind,
-							  const std::string& a, const std::string& b, float value,
-							  bool measurement = false, const std::string& name = {});
-
-/**
- * @brief Unbounded reference line (`CCadReferenceLine`) through `origin` along `direction`.
- * @details A datum, not a solid - leave it out of `makeCadBoolean` operands.
- * `direction` need not be unit length.
- */
-entt::entity makeCadReferenceLine(glm::vec3 origin, glm::vec3 direction,
-								  const std::string& name = {});
-
-entt::entity makeCadReferenceLine(rigkit::MEcs& ecs, glm::vec3 origin, glm::vec3 direction,
-								  const std::string& name = {});
-
-/**
- * @brief Unbounded reference line through two named entities.
- * @details The line follows `a` and `b` when the model rebuilds, so it needs no
- * coordinates of its own.
- */
-entt::entity makeCadReferenceLineThrough(const std::string& a, const std::string& b,
-										 const std::string& name = {});
-
-entt::entity makeCadReferenceLineThrough(rigkit::MEcs& ecs, const std::string& a,
-										 const std::string& b, const std::string& name = {});
-
-/**
- * @brief Unbounded reference plane (`CCadReferencePlane`) through `origin` facing `normal`.
- * @details A datum, not a solid, and it cuts nothing. `normal` need not be unit length.
- */
-entt::entity makeCadReferencePlane(glm::vec3 origin, glm::vec3 normal,
-								   const std::string& name = {});
-
-entt::entity makeCadReferencePlane(rigkit::MEcs& ecs, glm::vec3 origin, glm::vec3 normal,
-								   const std::string& name = {});
-
-/**
- * @brief Unbounded reference plane through a named entity, facing `normal`.
- * @details The plane follows `a` when the model rebuilds. One entity fixes a
- * point but not an orientation, so `normal` stays authored.
- */
-entt::entity makeCadReferencePlaneThrough(const std::string& a, glm::vec3 normal,
-										  const std::string& name = {});
-
-entt::entity makeCadReferencePlaneThrough(rigkit::MEcs& ecs, const std::string& a, glm::vec3 normal,
-										  const std::string& name = {});
 
 /**
  * @brief Light entity (`CTransform` + `CLight`).

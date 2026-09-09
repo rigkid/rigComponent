@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cmath>
+#include <cstdint>
 #include <string>
 #include <unordered_map>
 
@@ -57,11 +58,91 @@ bool namesMatch(std::string_view propName, std::string_view requested) {
 	return normalizeKey(propName) == normalizeKey(requested);
 }
 
+struct PropCacheKey {
+	MEcs* ecs = nullptr;
+	uint32_t entity = 0;
+	std::string key;
+	bool operator==(const PropCacheKey& o) const {
+		return ecs == o.ecs && entity == o.entity && key == o.key;
+	}
+};
+
+struct PropCacheKeyHash {
+	size_t operator()(const PropCacheKey& k) const {
+		size_t h = std::hash<const void*>{}(k.ecs);
+		h ^= std::hash<uint32_t>{}(k.entity) + 0x9e3779b9u + (h << 6) + (h >> 2);
+		h ^= std::hash<std::string>{}(k.key) + 0x9e3779b9u + (h << 6) + (h >> 2);
+		return h;
+	}
+};
+
+struct PropCacheHit {
+	void* data = nullptr;
+	int type = 0;
+};
+
+uint32_t g_propGen = 1;
+std::unordered_map<PropCacheKey, PropCacheHit, PropCacheKeyHash> g_propCache;
+uint32_t g_propCacheGen = 1;
+
+void rememberProp(MEcs& ecs, entt::entity entity, std::string_view key, void* data, int type) {
+	if (g_propCache.size() > 256 || g_propCacheGen != g_propGen) {
+		g_propCache.clear();
+		g_propCacheGen = g_propGen;
+	}
+	PropCacheKey k{&ecs, entt::to_integral(entity), std::string(key)};
+	g_propCache[std::move(k)] = PropCacheHit{data, type};
+}
+
+const PropCacheHit* cachedProp(MEcs& ecs, entt::entity entity, std::string_view key) {
+	if (g_propCacheGen != g_propGen) {
+		g_propCache.clear();
+		g_propCacheGen = g_propGen;
+		return nullptr;
+	}
+	PropCacheKey k{&ecs, entt::to_integral(entity), std::string(key)};
+	const auto it = g_propCache.find(k);
+	return it == g_propCache.end() ? nullptr : &it->second;
+}
+
+bool writeScalar(void* data, int type, float value) {
+	if (!data) {
+		return false;
+	}
+	if (type == EPT_FLOAT || type == EPT_DOUBLE) {
+		*static_cast<float*>(data) = value;
+		return true;
+	}
+	if (type == EPT_INT || type == EPT_UINT) {
+		*static_cast<int*>(data) = static_cast<int>(std::lround(value));
+		return true;
+	}
+	if (type == EPT_BOOL) {
+		*static_cast<bool*>(data) = value >= 0.5f;
+		return true;
+	}
+	return false;
+}
+
 } // namespace
+
+void invalidateEntityPropertyCache() {
+	++g_propGen;
+	if (g_propGen == 0) {
+		++g_propGen;
+	}
+	g_propCache.clear();
+	g_propCacheGen = g_propGen;
+}
 
 bool writeEntityProperty(MEcs& ecs, entt::entity entity, std::string_view propertyKey, float value) {
 	if (entity == entt::null || propertyKey.empty()) {
 		return false;
+	}
+	if (const auto* hit = cachedProp(ecs, entity, propertyKey)) {
+		if (writeScalar(hit->data, hit->type, value)) {
+			return true;
+		}
 	}
 	const std::string resolved = resolvePropName(propertyKey);
 	for (const auto& typeInfo : ecs.componentTypes()) {
@@ -73,16 +154,8 @@ bool writeEntityProperty(MEcs& ecs, entt::entity entity, std::string_view proper
 			if (!namesMatch(p.name, resolved) && !namesMatch(p.name, propertyKey)) {
 				continue;
 			}
-			if (p.type == EPT_FLOAT || p.type == EPT_DOUBLE) {
-				*static_cast<float*>(p.data) = value;
-				return true;
-			}
-			if (p.type == EPT_INT || p.type == EPT_UINT) {
-				*static_cast<int*>(p.data) = static_cast<int>(std::lround(value));
-				return true;
-			}
-			if (p.type == EPT_BOOL) {
-				*static_cast<bool*>(p.data) = value >= 0.5f;
+			if (writeScalar(p.data, p.type, value)) {
+				rememberProp(ecs, entity, propertyKey, p.data, p.type);
 				return true;
 			}
 		}
@@ -142,6 +215,13 @@ bool writeEntityVec2Property(MEcs& ecs, entt::entity entity, std::string_view pr
 	if (entity == entt::null || propertyKey.empty()) {
 		return false;
 	}
+	if (const auto* hit = cachedProp(ecs, entity, propertyKey); hit && hit->type == EPT_VEC2 &&
+																hit->data) {
+		auto* v = static_cast<float*>(hit->data);
+		v[0] = value.x;
+		v[1] = value.y;
+		return true;
+	}
 	const std::string resolved = resolvePropName(propertyKey);
 	for (const auto& typeInfo : ecs.componentTypes()) {
 		if (!ecs.hasRegisteredComponent(typeInfo, entity)) {
@@ -156,6 +236,7 @@ bool writeEntityVec2Property(MEcs& ecs, entt::entity entity, std::string_view pr
 				auto* v = static_cast<float*>(p.data);
 				v[0] = value.x;
 				v[1] = value.y;
+				rememberProp(ecs, entity, propertyKey, p.data, p.type);
 				return true;
 			}
 		}

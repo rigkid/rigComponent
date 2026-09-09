@@ -1,5 +1,6 @@
 #include "rig/create.h"
 
+#include "CAssetRef.h"
 #include "CGroup.h"
 #include "CRelationship.h"
 #include "CSelectable.h"
@@ -218,8 +219,8 @@ entt::entity makeOrbitCamera(rigkit::MEcs& ecs, glm::vec3 target, float radius, 
 	return e;
 }
 
-entt::entity makeOrthoCamera(rigkit::MEcs& ecs, rigkit::ecs::COrthoView::Face face, glm::vec3 target,
-							 float orthoHeight, const std::string& name) {
+entt::entity makeOrthoCamera(rigkit::MEcs& ecs, rigkit::ecs::COrthoView::Face face,
+							 glm::vec3 target, float orthoHeight, const std::string& name) {
 	auto e = ecs.createEntity(name);
 	rigkit::ecs::COrthoView view;
 	view.face = face;
@@ -236,112 +237,6 @@ entt::entity makeOrthoCamera(rigkit::MEcs& ecs, rigkit::ecs::COrthoView::Face fa
 	ecs.addComponent(e, xf);
 	ecs.addComponent(e, cam);
 	ecs.addComponent(e, view);
-	return e;
-}
-
-entt::entity makeCadBox(rigkit::MEcs& ecs, float sizeX, float sizeY, float sizeZ, bool center,
-						const std::string& name) {
-	auto e = ecs.createEntity(name);
-	ecs.addComponent(e, rigkit::ecs::CTransform{});
-	rigkit::ecs::CCadBox box;
-	box.sizeX = sizeX;
-	box.sizeY = sizeY;
-	box.sizeZ = sizeZ;
-	box.center = center;
-	ecs.addComponent(e, box);
-	return e;
-}
-
-entt::entity makeCadCylinder(rigkit::MEcs& ecs, float radius, float height, bool center,
-							 const std::string& name) {
-	auto e = ecs.createEntity(name);
-	ecs.addComponent(e, rigkit::ecs::CTransform{});
-	rigkit::ecs::CCadCylinder cyl;
-	cyl.radius = radius;
-	cyl.height = height;
-	cyl.center = center;
-	ecs.addComponent(e, cyl);
-	return e;
-}
-
-entt::entity makeCadSphere(rigkit::MEcs& ecs, float radius, const std::string& name) {
-	auto e = ecs.createEntity(name);
-	ecs.addComponent(e, rigkit::ecs::CTransform{});
-	rigkit::ecs::CCadSphere sphere;
-	sphere.radius = radius;
-	ecs.addComponent(e, sphere);
-	return e;
-}
-
-entt::entity makeCadBoolean(rigkit::MEcs& ecs, rigkit::ecs::CCadBoolean::Op op,
-							std::vector<std::string> operands, const rigkit::ecs::CDrawStyle& style,
-							const std::string& name) {
-	auto e = ecs.createEntity(name);
-	ecs.addComponent(e, rigkit::ecs::CTransform{});
-	ecs.addComponent(e, style);
-	rigkit::ecs::CCadBoolean b;
-	b.op = op;
-	b.operands = std::move(operands);
-	ecs.addComponent(e, std::move(b));
-	return e;
-}
-
-entt::entity makeCadDimension(rigkit::MEcs& ecs, rigkit::ecs::CCadDimension::Kind kind,
-							  const std::string& a, const std::string& b, float value,
-							  bool measurement, const std::string& name) {
-	auto e = ecs.createEntity(name);
-	ecs.addComponent(e, rigkit::ecs::CTransform{});
-	rigkit::ecs::CCadDimension dim;
-	dim.kind = kind;
-	dim.a = a;
-	dim.b = b;
-	dim.value = value;
-	dim.measurement = measurement;
-	ecs.addComponent(e, dim);
-	return e;
-}
-
-entt::entity makeCadReferenceLine(rigkit::MEcs& ecs, glm::vec3 origin, glm::vec3 direction,
-								  const std::string& name) {
-	auto e = ecs.createEntity(name);
-	ecs.addComponent(e, rigkit::ecs::CTransform{});
-	rigkit::ecs::CCadReferenceLine line;
-	line.origin = origin;
-	line.direction = direction;
-	ecs.addComponent(e, line);
-	return e;
-}
-
-entt::entity makeCadReferenceLineThrough(rigkit::MEcs& ecs, const std::string& a,
-										 const std::string& b, const std::string& name) {
-	auto e = ecs.createEntity(name);
-	ecs.addComponent(e, rigkit::ecs::CTransform{});
-	rigkit::ecs::CCadReferenceLine line;
-	line.a = a;
-	line.b = b;
-	ecs.addComponent(e, line);
-	return e;
-}
-
-entt::entity makeCadReferencePlane(rigkit::MEcs& ecs, glm::vec3 origin, glm::vec3 normal,
-								   const std::string& name) {
-	auto e = ecs.createEntity(name);
-	ecs.addComponent(e, rigkit::ecs::CTransform{});
-	rigkit::ecs::CCadReferencePlane plane;
-	plane.origin = origin;
-	plane.normal = normal;
-	ecs.addComponent(e, plane);
-	return e;
-}
-
-entt::entity makeCadReferencePlaneThrough(rigkit::MEcs& ecs, const std::string& a, glm::vec3 normal,
-										  const std::string& name) {
-	auto e = ecs.createEntity(name);
-	ecs.addComponent(e, rigkit::ecs::CTransform{});
-	rigkit::ecs::CCadReferencePlane plane;
-	plane.a = a;
-	plane.normal = normal;
-	ecs.addComponent(e, plane);
 	return e;
 }
 
@@ -463,6 +358,17 @@ entt::entity makePolygon(std::vector<glm::vec2> points, bool closed,
 	return ecs ? makePolygon(*ecs, std::move(points), closed, style, name) : entt::null;
 }
 
+entt::entity makePath(rigkit::MEcs& ecs, rigkit::ecs::CPath path,
+					  const rigkit::ecs::CDrawStyle& style, const std::string& name) {
+	return spawnShape(ecs, std::move(path), style, at(0, 0), name);
+}
+
+entt::entity makePath(rigkit::ecs::CPath path, const rigkit::ecs::CDrawStyle& style,
+					  const std::string& name) {
+	auto* ecs = boundEcs();
+	return ecs ? makePath(*ecs, std::move(path), style, name) : entt::null;
+}
+
 entt::entity makeArc(float x, float y, float radius, float startAngle, float endAngle, bool pie,
 					 const rigkit::ecs::CDrawStyle& style, const std::string& name) {
 	auto* ecs = boundEcs();
@@ -518,61 +424,10 @@ entt::entity makeOrbitCamera(glm::vec3 target, float radius, float pitch, bool a
 	return ecs ? makeOrbitCamera(*ecs, target, radius, pitch, active, name) : entt::null;
 }
 
-entt::entity makeOrthoCamera(rigkit::ecs::COrthoView::Face face, glm::vec3 target, float orthoHeight,
-							 const std::string& name) {
+entt::entity makeOrthoCamera(rigkit::ecs::COrthoView::Face face, glm::vec3 target,
+							 float orthoHeight, const std::string& name) {
 	auto* ecs = boundEcs();
 	return ecs ? makeOrthoCamera(*ecs, face, target, orthoHeight, name) : entt::null;
-}
-
-entt::entity makeCadBox(float sizeX, float sizeY, float sizeZ, bool center,
-						const std::string& name) {
-	auto* ecs = boundEcs();
-	return ecs ? makeCadBox(*ecs, sizeX, sizeY, sizeZ, center, name) : entt::null;
-}
-
-entt::entity makeCadCylinder(float radius, float height, bool center, const std::string& name) {
-	auto* ecs = boundEcs();
-	return ecs ? makeCadCylinder(*ecs, radius, height, center, name) : entt::null;
-}
-
-entt::entity makeCadSphere(float radius, const std::string& name) {
-	auto* ecs = boundEcs();
-	return ecs ? makeCadSphere(*ecs, radius, name) : entt::null;
-}
-
-entt::entity makeCadBoolean(rigkit::ecs::CCadBoolean::Op op, std::vector<std::string> operands,
-							const rigkit::ecs::CDrawStyle& style, const std::string& name) {
-	auto* ecs = boundEcs();
-	return ecs ? makeCadBoolean(*ecs, op, std::move(operands), style, name) : entt::null;
-}
-
-entt::entity makeCadDimension(rigkit::ecs::CCadDimension::Kind kind, const std::string& a,
-							  const std::string& b, float value, bool measurement,
-							  const std::string& name) {
-	auto* ecs = boundEcs();
-	return ecs ? makeCadDimension(*ecs, kind, a, b, value, measurement, name) : entt::null;
-}
-
-entt::entity makeCadReferenceLine(glm::vec3 origin, glm::vec3 direction, const std::string& name) {
-	auto* ecs = boundEcs();
-	return ecs ? makeCadReferenceLine(*ecs, origin, direction, name) : entt::null;
-}
-
-entt::entity makeCadReferenceLineThrough(const std::string& a, const std::string& b,
-										 const std::string& name) {
-	auto* ecs = boundEcs();
-	return ecs ? makeCadReferenceLineThrough(*ecs, a, b, name) : entt::null;
-}
-
-entt::entity makeCadReferencePlane(glm::vec3 origin, glm::vec3 normal, const std::string& name) {
-	auto* ecs = boundEcs();
-	return ecs ? makeCadReferencePlane(*ecs, origin, normal, name) : entt::null;
-}
-
-entt::entity makeCadReferencePlaneThrough(const std::string& a, glm::vec3 normal,
-										  const std::string& name) {
-	auto* ecs = boundEcs();
-	return ecs ? makeCadReferencePlaneThrough(*ecs, a, normal, name) : entt::null;
 }
 
 entt::entity makeMeshGrid(int half, float y, const rigkit::ecs::CDrawStyle& style,

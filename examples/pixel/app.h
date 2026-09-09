@@ -10,12 +10,7 @@
 
 class PixelApp : public rigkit::IApp {
   public:
-	PixelApp() {
-		window().width = 1200;
-		window().height = 760;
-		window().title = "pixel";
-		settings().appName = "pixel";
-	}
+	PixelApp() { settings().appName = "pixel"; }
 
 	void setup() override;
 	void update(float dt) override;

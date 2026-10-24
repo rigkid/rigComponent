@@ -6,9 +6,9 @@
  * @details Data and pure functions only; the point-dragging widget lives in `rigVectorEditor`.
  */
 
+#include <glm/glm.hpp>
 #include <algorithm>
 #include <cmath>
-#include <glm/glm.hpp>
 #include <string>
 #include <vector>
 #include "ecs/PropertyReflection.h"
@@ -19,7 +19,8 @@ namespace ecs {
 /**
  * @brief 1D transfer curve - speaks `rig.anim.curve`.
  * @details Remaps normalized t in [0,1] to [0,1]. Named presets regenerate
- * `points`; editing points sets `preset` to Custom. Runtime LUTs stay host-side.
+ * `points` and set interpolation: linear is a straight line, the others are
+ * smooth. Editing points sets `preset` to Custom. Runtime LUTs stay host-side.
  * `handles` are relative in/out offsets (cubic Bezier) when `interp` is Bezier.
  */
 struct CCurve {
@@ -42,7 +43,7 @@ struct CCurve {
 
 	std::vector<glm::vec2> points{{0.f, 0.f}, {1.f, 1.f}};
 	std::vector<Handle> handles{{}, {}};
-	Interp interp = Interp::Smooth;
+	Interp interp = Interp::Linear;
 	Preset preset = Preset::Linear;
 
 	static constexpr const char* kPresetNames[] = {"linear",  "ease-in", "ease-out", "ease-in-out",
@@ -100,7 +101,11 @@ inline ecs::CCurve::Interp interpFromId(const std::string& id) {
 	return ecs::CCurve::Interp::Smooth;
 }
 
-/** @brief Replace points from a named preset (Custom is a no-op). Handles stay zero. */
+/**
+ * @brief Replace points from a named preset (Custom is a no-op).
+ * @details Linear uses linear interpolation, so the diagonal is a straight line.
+ * The other presets use smooth interpolation. Handles are cleared.
+ */
 inline void applyPreset(ecs::CCurve& c, ecs::CCurve::Preset p) {
 	c.preset = p;
 	auto set = [&](std::initializer_list<glm::vec2> pts) {
@@ -109,24 +114,31 @@ inline void applyPreset(ecs::CCurve& c, ecs::CCurve::Preset p) {
 	};
 	switch (p) {
 	case ecs::CCurve::Preset::Linear:
+		c.interp = ecs::CCurve::Interp::Linear;
 		set({{0.f, 0.f}, {1.f, 1.f}});
 		break;
 	case ecs::CCurve::Preset::EaseIn:
+		c.interp = ecs::CCurve::Interp::Smooth;
 		set({{0.f, 0.f}, {0.45f, 0.05f}, {1.f, 1.f}});
 		break;
 	case ecs::CCurve::Preset::EaseOut:
+		c.interp = ecs::CCurve::Interp::Smooth;
 		set({{0.f, 0.f}, {0.55f, 0.95f}, {1.f, 1.f}});
 		break;
 	case ecs::CCurve::Preset::EaseInOut:
+		c.interp = ecs::CCurve::Interp::Smooth;
 		set({{0.f, 0.f}, {0.35f, 0.05f}, {0.65f, 0.95f}, {1.f, 1.f}});
 		break;
 	case ecs::CCurve::Preset::SCurve:
+		c.interp = ecs::CCurve::Interp::Smooth;
 		set({{0.f, 0.f}, {0.25f, 0.1f}, {0.75f, 0.9f}, {1.f, 1.f}});
 		break;
 	case ecs::CCurve::Preset::Bulge:
+		c.interp = ecs::CCurve::Interp::Smooth;
 		set({{0.f, 0.f}, {0.25f, 0.12f}, {0.5f, 0.5f}, {0.75f, 0.88f}, {1.f, 1.f}});
 		break;
 	case ecs::CCurve::Preset::Squeeze:
+		c.interp = ecs::CCurve::Interp::Smooth;
 		set({{0.f, 0.f}, {0.25f, 0.35f}, {0.5f, 0.5f}, {0.75f, 0.65f}, {1.f, 1.f}});
 		break;
 	case ecs::CCurve::Preset::Custom:

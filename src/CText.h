@@ -41,6 +41,25 @@ struct CText {
 	std::string features; ///< e.g. "liga,ss01" - optional OT features string.
 	bool useKerning = true;
 	float tracking = 0.f; ///< thousandths of an em
+	enum class Anchor : uint8_t { Start, Middle, End };
+	enum class WritingMode : uint8_t { HorizontalTb, VerticalRl, VerticalLr };
+	enum class Direction : uint8_t { Ltr, Rtl };
+	enum class Baseline : uint8_t { Auto, Alphabetic, Middle, Hanging, Ideographic, Central };
+	Anchor anchor = Anchor::Start;
+	WritingMode writingMode = WritingMode::HorizontalTb;
+	Direction direction = Direction::Ltr;
+	Baseline baseline = Baseline::Auto;
+	struct Placement {
+		int index = 0;
+		float x = 0.f;
+		float y = 0.f;
+		float dx = 0.f;
+		float dy = 0.f;
+		float rotateDegrees = 0.f;
+		bool hasX = false;
+		bool hasY = false;
+	};
+	std::vector<Placement> placements;
 
 	std::vector<sProp> GetProperties() {
 		return {{0, "Text", EPT_STRING, &text},

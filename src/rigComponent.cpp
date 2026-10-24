@@ -48,6 +48,17 @@
 #include "CSpline3d.h"
 #include "CStar.h"
 #include "CText.h"
+#include "CTextPath.h"
+#include "CFontFace.h"
+#include "CInstance.h"
+#include "CPaintClip.h"
+#include "CPaintFilter.h"
+#include "CPaintFilterStep.h"
+#include "CPaintMask.h"
+#include "CPaintMarker.h"
+#include "CPaintMarkers.h"
+#include "CPaintOrder.h"
+#include "CPaintPattern.h"
 #include "CTransform.h"
 #include "CUiPanel.h"
 #include "CVertexSelection.h"
@@ -123,6 +134,17 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CAssetRef>("AssetRef", true);
 	ecs->registerComponent<ecs::CCode>("Code", true);
 	ecs->registerComponent<ecs::CText>("Text", true);
+	ecs->registerComponent<ecs::CTextPath>("TextPath", true);
+	ecs->registerComponent<ecs::CFontFace>("FontFace", true);
+	ecs->registerComponent<ecs::CInstance>("Instance", true);
+	ecs->registerComponent<ecs::CPaintClip>("PaintClip", true);
+	ecs->registerComponent<ecs::CPaintMask>("PaintMask", true);
+	ecs->registerComponent<ecs::CPaintMarkers>("PaintMarkers", true);
+	ecs->registerComponent<ecs::CPaintMarker>("PaintMarker", true);
+	ecs->registerComponent<ecs::CPaintPattern>("PaintPattern", true);
+	ecs->registerComponent<ecs::CPaintOrder>("PaintOrder", true);
+	ecs->registerComponent<ecs::CPaintFilter>("PaintFilter", true);
+	ecs->registerComponent<ecs::CPaintFilterStep>("PaintFilterStep", true);
 	ecs->registerComponent<ecs::CScreenCast>("ScreenCast", true);
 	ecs->registerComponent<ecs::CScreenCastReceive>("ScreenCastReceive", true);
 	ecs->registerComponent<ecs::CCastReceiver>("CastReceiver", true);

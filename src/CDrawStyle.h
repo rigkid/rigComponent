@@ -18,6 +18,9 @@ struct CDrawStyle {
 	enum class StrokeJoin { Miter, Bevel, Round };
 	StrokeCap strokeCap = StrokeCap::Butt;
 	StrokeJoin strokeJoin = StrokeJoin::Miter;
+	float miterLimit = 4.0f;
+	enum class VectorEffect { None, NonScalingStroke };
+	VectorEffect vectorEffect = VectorEffect::None;
 
 	std::vector<float> dashPattern;
 	float dashOffset = 0.0f;

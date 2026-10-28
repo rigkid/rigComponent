@@ -2,7 +2,7 @@
   "name": "rigComponent",
   "url": "https://github.com/rigkid/rigComponent.git",
   "ref": "main",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Rigkid",
   "license": "MIT Rigkid Contributors",
   "description": "Data-only ECS components + GetProperties metadata (includes general CPath / rig.geometry.path).",

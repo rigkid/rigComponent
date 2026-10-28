@@ -75,7 +75,7 @@ void PixelApp::setupUi() {
 	mui->addHostPanel(rigkit::HostPanel::Properties);
 	mui->addHostPanel(rigkit::HostPanel::Log);
 
-	auto* wm = ui->getWindowManager();
+	auto* wm = mui->getWindowManager();
 	if (wm) {
 		if (auto canvas = wm->createWindow<CanvasWindow>()) {
 			canvas->setTool(&m_tool);

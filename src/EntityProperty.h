@@ -11,6 +11,7 @@
 #include <optional>
 #include <string_view>
 #include "ecs/MEcs.h"
+#include "ecs/PropertyReflection.h"
 
 namespace rigkit {
 namespace ecs {
@@ -37,6 +38,15 @@ std::optional<float> readEntityProperty(MEcs& ecs, std::string_view entityName,
 /** @brief Write two floats into a vec2 property, or two named float props. */
 bool writeEntityVec2Property(MEcs& ecs, entt::entity entity, std::string_view propertyKey,
 							 glm::vec2 value);
+
+/**
+ * @brief Resolve a `GetProperties` row by `propertyKey`.
+ * @details Same name matching as read/write (dotted aliases, display names).
+ * The returned `sProp.data` points into live component storage.
+ * @return Empty when the entity or key does not match a registered field.
+ */
+std::optional<sProp> findEntityProperty(MEcs& ecs, entt::entity entity,
+										std::string_view propertyKey);
 
 /**
  * @brief Drop cached GetProperties pointers.

@@ -41,6 +41,8 @@ struct CText {
 	std::string features; ///< e.g. "liga,ss01" - optional OT features string.
 	bool useKerning = true;
 	float tracking = 0.f; ///< thousandths of an em
+	bool underline = false;
+	bool strikeThrough = false;
 	enum class Anchor : uint8_t { Start, Middle, End };
 	enum class WritingMode : uint8_t { HorizontalTb, VerticalRl, VerticalLr };
 	enum class Direction : uint8_t { Ltr, Rtl };
@@ -67,7 +69,9 @@ struct CText {
 				{2, "Color", EPT_COLOR, &rgba.x},
 				{3, "Features", EPT_STRING, &features},
 				{4, "Kerning", EPT_BOOL, &useKerning},
-				{5, "Tracking", EPT_FLOAT, &tracking}};
+				{5, "Tracking", EPT_FLOAT, &tracking},
+				{6, "Underline", EPT_BOOL, &underline},
+				{7, "Strikethrough", EPT_BOOL, &strikeThrough}};
 	}
 };
 

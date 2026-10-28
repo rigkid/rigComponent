@@ -210,6 +210,27 @@ std::optional<float> readEntityProperty(MEcs& ecs, std::string_view entityName,
 	return readEntityProperty(ecs, e, propertyKey);
 }
 
+std::optional<sProp> findEntityProperty(MEcs& ecs, entt::entity entity,
+										std::string_view propertyKey) {
+	if (entity == entt::null || propertyKey.empty()) {
+		return std::nullopt;
+	}
+	const std::string resolved = resolvePropName(propertyKey);
+	for (const auto& typeInfo : ecs.componentTypes()) {
+		if (!ecs.hasRegisteredComponent(typeInfo, entity)) {
+			continue;
+		}
+		auto props = ecs.registeredProperties(typeInfo, entity);
+		for (auto& p : props) {
+			if (!namesMatch(p.name, resolved) && !namesMatch(p.name, propertyKey)) {
+				continue;
+			}
+			return p;
+		}
+	}
+	return std::nullopt;
+}
+
 bool writeEntityVec2Property(MEcs& ecs, entt::entity entity, std::string_view propertyKey,
 							 glm::vec2 value) {
 	if (entity == entt::null || propertyKey.empty()) {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <cmath>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <cmath>
 #include <vector>
 
 #include "ecs/PropertyReflection.h"
@@ -29,6 +29,9 @@ struct CCamera {
 	float orthoHeight = 10.0f;
 	float nearClip = 0.1f;
 	float farClip = 1000.0f;
+	/// Perspective only: far plane at infinity (farClip ignored). Stops distant
+	/// CAD wires dropping out when the bed spans metres and near is small.
+	bool infiniteFar = false;
 	/// 0 = use viewport aspect at present time.
 	float aspect = 0.0f;
 	/// Low-res present size (0 = full window). Nearest-upscaled by `rigRender3D`.
@@ -59,7 +62,11 @@ struct CCamera {
 			const float halfW = halfH * a;
 			return glm::ortho(-halfW, halfW, -halfH, halfH, nearClip, farClip);
 		}
-		return glm::perspective(glm::radians(fovYDegrees), a, nearClip, farClip);
+		const float n = std::max(nearClip, 1e-4f);
+		if (infiniteFar) {
+			return glm::infinitePerspective(glm::radians(fovYDegrees), a, n);
+		}
+		return glm::perspective(glm::radians(fovYDegrees), a, n, std::max(farClip, n + 1.f));
 	}
 
 	/// View from hierarchy world pose (call after `SHierarchy`).
@@ -97,9 +104,10 @@ struct CCamera {
 			{3, "Ortho Height", EPT_FLOAT, &orthoHeight},
 			{4, "Near", EPT_FLOAT, &nearClip},
 			{5, "Far", EPT_FLOAT, &farClip},
-			{6, "Aspect (0=viewport)", EPT_FLOAT, &aspect},
-			{7, "Present Width (0=full)", EPT_INT, &presentWidth},
-			{8, "Present Height (0=full)", EPT_INT, &presentHeight},
+			{6, "Infinite Far", EPT_BOOL, &infiniteFar},
+			{7, "Aspect (0=viewport)", EPT_FLOAT, &aspect},
+			{8, "Present Width (0=full)", EPT_INT, &presentWidth},
+			{9, "Present Height (0=full)", EPT_INT, &presentHeight},
 			{10, "Shade", EPT_ENUM, reinterpret_cast<int*>(&shade), kShadeNames, 3}};
 	}
 };

@@ -127,6 +127,7 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CUiPanel>("UiPanel", true);
 	ecs->registerComponent<ecs::CUiGroup>("UiGroup", true);
 	ecs->registerComponent<ecs::CUiControl>("UiControl", true);
+	ecs->registerComponent<ecs::CUiAction>("UiAction", true);
 	ecs->registerComponent<ecs::CFaceSelection>("FaceSelection", true);
 	ecs->registerComponent<ecs::CVertexSelection>("VertexSelection", true);
 	ecs->registerComponent<ecs::CEdgeSelection>("EdgeSelection", true);

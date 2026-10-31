@@ -390,22 +390,27 @@ void select(rigkit::MEcs& ecs, entt::entity entity, bool selected = true);
 
 /**
  * @brief Portable tool or HUD surface (`CUiPanel`).
- * @details **rigImGui** presents visible panels. `surface` is `kUiSurfaceTool` or
- * `kUiSurfaceHud`.
+ * @details **rigImGui** presents visible panels. `surface` is `CUiPanel::Surface`.
  */
 entt::entity makeUiPanel(const std::string& role = {},
-						 int surface = rigkit::ecs::kUiSurfaceTool, const std::string& name = {});
+						 rigkit::ecs::CUiPanel::Surface surface =
+							 rigkit::ecs::CUiPanel::Surface::Tool,
+						 const std::string& name = {});
 
 entt::entity makeUiPanel(rigkit::MEcs& ecs, const std::string& role = {},
-						 int surface = rigkit::ecs::kUiSurfaceTool, const std::string& name = {});
+						 rigkit::ecs::CUiPanel::Surface surface =
+							 rigkit::ecs::CUiPanel::Surface::Tool,
+						 const std::string& name = {});
 
 /** @brief Section inside a panel (`CUiGroup`). */
 entt::entity makeUiGroup(entt::entity panel, int order = 0,
-						 int orientation = rigkit::ecs::kUiOrientVertical,
+						 rigkit::ecs::CUiGroup::Orientation orientation =
+							 rigkit::ecs::CUiGroup::Orientation::Vertical,
 						 const std::string& name = {});
 
 entt::entity makeUiGroup(rigkit::MEcs& ecs, entt::entity panel, int order = 0,
-						 int orientation = rigkit::ecs::kUiOrientVertical,
+						 rigkit::ecs::CUiGroup::Orientation orientation =
+							 rigkit::ecs::CUiGroup::Orientation::Vertical,
 						 const std::string& name = {});
 
 /**
@@ -413,12 +418,16 @@ entt::entity makeUiGroup(rigkit::MEcs& ecs, entt::entity panel, int order = 0,
  * @details `propertyKey` matches `GetProperties` / dotted aliases (`position.y`).
  */
 entt::entity makeUiControl(entt::entity panel, entt::entity target, const std::string& propertyKey,
-						   int order = 0, int widget = rigkit::ecs::kUiWidgetAuto,
+						   int order = 0,
+						   rigkit::ecs::CUiControl::Widget widget =
+							   rigkit::ecs::CUiControl::Widget::Auto,
 						   const std::string& name = {});
 
 entt::entity makeUiControl(rigkit::MEcs& ecs, entt::entity panel, entt::entity target,
 						   const std::string& propertyKey, int order = 0,
-						   int widget = rigkit::ecs::kUiWidgetAuto, const std::string& name = {});
+						   rigkit::ecs::CUiControl::Widget widget =
+							   rigkit::ecs::CUiControl::Widget::Auto,
+						   const std::string& name = {});
 
 /**
  * @brief Command button on a panel (`CUiAction`).

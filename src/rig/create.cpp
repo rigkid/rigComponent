@@ -470,8 +470,8 @@ void select(entt::entity entity, bool selected) {
 	}
 }
 
-entt::entity makeUiPanel(rigkit::MEcs& ecs, const std::string& role, int surface,
-						 const std::string& name) {
+entt::entity makeUiPanel(rigkit::MEcs& ecs, const std::string& role,
+						 rigkit::ecs::CUiPanel::Surface surface, const std::string& name) {
 	auto e = ecs.createEntity(name);
 	rigkit::ecs::CUiPanel panel;
 	panel.role = role;
@@ -480,13 +480,14 @@ entt::entity makeUiPanel(rigkit::MEcs& ecs, const std::string& role, int surface
 	return e;
 }
 
-entt::entity makeUiPanel(const std::string& role, int surface, const std::string& name) {
+entt::entity makeUiPanel(const std::string& role, rigkit::ecs::CUiPanel::Surface surface,
+						 const std::string& name) {
 	auto* ecs = boundEcs();
 	return ecs ? makeUiPanel(*ecs, role, surface, name) : entt::null;
 }
 
-entt::entity makeUiGroup(rigkit::MEcs& ecs, entt::entity panel, int order, int orientation,
-						 const std::string& name) {
+entt::entity makeUiGroup(rigkit::MEcs& ecs, entt::entity panel, int order,
+						 rigkit::ecs::CUiGroup::Orientation orientation, const std::string& name) {
 	auto e = ecs.createEntity(name);
 	rigkit::ecs::CUiGroup group;
 	group.panel = entt::to_integral(panel);
@@ -496,14 +497,15 @@ entt::entity makeUiGroup(rigkit::MEcs& ecs, entt::entity panel, int order, int o
 	return e;
 }
 
-entt::entity makeUiGroup(entt::entity panel, int order, int orientation, const std::string& name) {
+entt::entity makeUiGroup(entt::entity panel, int order,
+						 rigkit::ecs::CUiGroup::Orientation orientation, const std::string& name) {
 	auto* ecs = boundEcs();
 	return ecs ? makeUiGroup(*ecs, panel, order, orientation, name) : entt::null;
 }
 
 entt::entity makeUiControl(rigkit::MEcs& ecs, entt::entity panel, entt::entity target,
-						   const std::string& propertyKey, int order, int widget,
-						   const std::string& name) {
+						   const std::string& propertyKey, int order,
+						   rigkit::ecs::CUiControl::Widget widget, const std::string& name) {
 	auto e = ecs.createEntity(name);
 	rigkit::ecs::CUiControl ctrl;
 	ctrl.panel = entt::to_integral(panel);
@@ -516,7 +518,8 @@ entt::entity makeUiControl(rigkit::MEcs& ecs, entt::entity panel, entt::entity t
 }
 
 entt::entity makeUiControl(entt::entity panel, entt::entity target, const std::string& propertyKey,
-						   int order, int widget, const std::string& name) {
+						   int order, rigkit::ecs::CUiControl::Widget widget,
+						   const std::string& name) {
 	auto* ecs = boundEcs();
 	return ecs ? makeUiControl(*ecs, panel, target, propertyKey, order, widget, name)
 			   : entt::null;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IWindow.h"
-class PreviewWindow : public rigkit::IWindow {
+#include "ImGuiPanel.h"
+class PreviewWindow : public rigkit::ImGuiPanel {
   public:
 	PreviewWindow();
 

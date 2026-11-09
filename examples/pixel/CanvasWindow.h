@@ -5,10 +5,10 @@
 #include <vector>
 
 #include "core/util/View2D.h"
-#include "IWindow.h"
+#include "ImGuiPanel.h"
 #include "PixelDoc.h"
 
-class CanvasWindow : public rigkit::IWindow {
+class CanvasWindow : public rigkit::ImGuiPanel {
   public:
 	CanvasWindow();
 

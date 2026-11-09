@@ -1,9 +1,9 @@
 #pragma once
 
-#include "IWindow.h"
+#include "ImGuiPanel.h"
 #include "PixelDoc.h"
 
-class BrushesWindow : public rigkit::IWindow {
+class BrushesWindow : public rigkit::ImGuiPanel {
   public:
 	BrushesWindow();
 

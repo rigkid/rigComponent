@@ -7,7 +7,7 @@
 #include <cstdio>
 #include <imgui.h>
 
-BrushesWindow::BrushesWindow() : IWindow("Brushes") {
+BrushesWindow::BrushesWindow() : ImGuiPanel("Brushes") {
 	setCategory("Edit");
 }
 

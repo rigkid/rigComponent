@@ -18,7 +18,7 @@ ImVec2 toIm(const glm::vec2& v) {
 }
 } // namespace
 
-CanvasWindow::CanvasWindow() : IWindow("Canvas") {
+CanvasWindow::CanvasWindow() : ImGuiPanel("Canvas") {
 	setCategory("Edit");
 	m_view.zoomMin = 0.25f;
 	m_view.zoomMax = 32.f;

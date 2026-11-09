@@ -9,7 +9,7 @@
 #include <imgui.h>
 #include <vector>
 
-PreviewWindow::PreviewWindow() : IWindow("Preview") {
+PreviewWindow::PreviewWindow() : ImGuiPanel("Preview") {
 	setCategory("Edit");
 }
 

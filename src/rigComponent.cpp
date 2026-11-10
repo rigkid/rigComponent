@@ -3,7 +3,7 @@
 #include "core/RigKitEngine.h"
 #include "core/pack/PackRegistry.h"
 #include "ecs/MEcs.h"
-#include "ecs/components/CGuide.h"
+#include "CGuide.h"
 #include "CAnchor.h"
 #include "CArc.h"
 #include "CAssetRef.h"

@@ -12,12 +12,12 @@ namespace ecs {
 /**
  * @brief Portable light POD - color/intensity + shade style.
  * @details Pose lives on `CTransform` (same entity). Speaks `rig.render.light`
- * (directional / point). Directional lights shine along local -Z (world).
- * Point lights use world translation. No GPU handles.
+ * (directional / point / spot). Directional and spot shine along local -Z
+ * (world). Point and spot use world translation. No GPU handles.
  * Albedo: `CMesh::faceColors` / `facePalette` / atlas, or `CDrawStyle` fill.
  */
 struct CLight {
-	enum class Type : int { Directional = 0, Point = 1 };
+	enum class Type : int { Directional = 0, Point = 1, Spot = 2 };
 
 	bool enabled = true;
 	Type type = Type::Directional;
@@ -34,10 +34,16 @@ struct CLight {
 	int bands = 3;
 	/// Ordered (Bayer) dither on banded shade thresholds.
 	bool dither = false;
+	/// Attenuation cutoff in content units. 0 = no cutoff. Ignored on directional.
+	float range = 0.f;
+	/// Spot penumbra inner half-angle. Ignored unless type is Spot.
+	float innerConeDegrees = 0.f;
+	/// Spot cone outer half-angle. Ignored unless type is Spot.
+	float outerConeDegrees = 45.f;
 
 	glm::vec3 color() const { return {colorR, colorG, colorB}; }
 
-	/// World-space direction the light travels (directional). Call after `SHierarchy`.
+	/// World-space direction the light travels (directional / spot). Call after `SHierarchy`.
 	static glm::vec3 direction(const CTransform& transform) {
 		const glm::vec3 z(transform.world[2]);
 		const float len = glm::length(z);
@@ -47,15 +53,15 @@ struct CLight {
 		return -z / len;
 	}
 
-	/// World-space position (point). Call after `SHierarchy`.
+	/// World-space position (point / spot). Call after `SHierarchy`.
 	static glm::vec3 position(const CTransform& transform) {
 		return {transform.world[3][0], transform.world[3][1], transform.world[3][2]};
 	}
 
 	std::vector<sProp> GetProperties() {
-		static constexpr const char* kTypeNames[] = {"Directional", "Point"};
+		static constexpr const char* kTypeNames[] = {"Directional", "Point", "Spot"};
 		return {{0, "Enabled", EPT_BOOL, &enabled},
-				{1, "Type", EPT_ENUM, reinterpret_cast<int*>(&type), kTypeNames, 2},
+				{1, "Type", EPT_ENUM, reinterpret_cast<int*>(&type), kTypeNames, 3},
 				{2, "Color R", EPT_FLOAT, &colorR},
 				{3, "Color G", EPT_FLOAT, &colorG},
 				{4, "Color B", EPT_FLOAT, &colorB},
@@ -63,7 +69,10 @@ struct CLight {
 				{6, "Ambient", EPT_FLOAT, &ambient},
 				{7, "Banded", EPT_BOOL, &banded},
 				{8, "Bands", EPT_INT, &bands},
-				{9, "Dither", EPT_BOOL, &dither}};
+				{9, "Dither", EPT_BOOL, &dither},
+				{10, "Range", EPT_FLOAT, &range},
+				{11, "Inner cone", EPT_FLOAT, &innerConeDegrees},
+				{12, "Outer cone", EPT_FLOAT, &outerConeDegrees}};
 	}
 };
 

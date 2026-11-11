@@ -2,6 +2,7 @@
 
 #include "core/pack/MPack.h"
 #include "core/RigKitEngine.h"
+#include "ecs/MEcs.h"
 #include "core/util/AppPaths.h"
 #include "rendering/U_gladGlfw.h"
 #include "packs/rigComponent/src/rigComponent.h"

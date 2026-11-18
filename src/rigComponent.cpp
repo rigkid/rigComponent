@@ -35,6 +35,7 @@
 #include "CRegularPolygon.h"
 #include "CRelationship.h"
 #include "CRenderBlend.h"
+#include "CImageFit.h"
 #include "CRenderEnvironment.h"
 #include "CRenderMaterial.h"
 #include "CRenderVisibility.h"
@@ -122,6 +123,7 @@ void rigComponent::setup() {
 	ecs->registerComponent<ecs::CName>("Name", true);
 	ecs->registerComponent<ecs::CRenderVisibility>("RenderVisibility", true);
 	ecs->registerComponent<ecs::CRenderBlend>("RenderBlend", true);
+	ecs->registerComponent<ecs::CImageFit>("ImageFit", true);
 	ecs->registerComponent<ecs::CRenderMaterial>("RenderMaterial", true);
 	ecs->registerComponent<ecs::CRenderEnvironment>("RenderEnvironment", false);
 	ecs->registerComponent<ecs::CUiPanel>("UiPanel", true);

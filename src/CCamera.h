@@ -64,7 +64,9 @@ struct CCamera {
 		}
 		const float n = std::max(nearClip, 1e-4f);
 		if (infiniteFar) {
-			return glm::infinitePerspective(glm::radians(fovYDegrees), a, n);
+			// Tweaked infinite far keeps distant float32 vertices strictly
+			// inside z <= w and leaves the projection invertible for picking.
+			return glm::tweakedInfinitePerspective(glm::radians(fovYDegrees), a, n, 1e-5f);
 		}
 		return glm::perspective(glm::radians(fovYDegrees), a, n, std::max(farClip, n + 1.f));
 	}

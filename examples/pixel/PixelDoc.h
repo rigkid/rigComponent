@@ -28,6 +28,7 @@ struct ToolState {
 
 entt::entity findSheet(rigkit::MEcs& ecs);
 entt::entity findPalette(rigkit::MEcs& ecs);
+/** @brief Document envelope entity, or null when none is bound. */
 entt::entity findProject(rigkit::MEcs& ecs);
 std::vector<entt::entity> layersByOrder(rigkit::MEcs& ecs);
 entt::entity selectedLayer(rigkit::MEcs& ecs);

@@ -10,6 +10,7 @@
 #include "ComponentSerializerRegistry.h"
 #include "CPalette.h"
 #include "CProject.h"
+#include "DocumentEnvelope.h"
 #include "CSelection.h"
 #include "ProjectJson.h"
 
@@ -213,8 +214,10 @@ entt::entity findPalette(rigkit::MEcs& ecs) {
 }
 
 entt::entity findProject(rigkit::MEcs& ecs) {
-	for (auto e : ecs.view<rigkit::ecs::CProject>()) {
-		return e;
+	const entt::entity entity = rigkit::project::documentEntity(ecs.registry());
+	if (entity != entt::null && ecs.registry().valid(entity) &&
+		ecs.hasComponent<rigkit::ecs::CProject>(entity)) {
+		return entity;
 	}
 	return entt::null;
 }
@@ -273,6 +276,7 @@ void newDocument(rigkit::MEcs& ecs, const CSpriteSheet& specIn, bool stamp) {
 	project.title = "Sprite Sheet";
 	project.dirty = true;
 	ecs.addComponent(doc, project);
+	rigkit::project::bindDocument(ecs.registry(), doc);
 
 	rig::makePalette(ecs, rigkit::ecs::CPalette::default16(), "palette");
 
